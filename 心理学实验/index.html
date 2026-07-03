@@ -115,11 +115,17 @@ body{
 .var-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
 .var-card small{display:block;font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:700}
 .var-card span{font-size:13px;line-height:1.55}
-.step-block{
-  background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:12px;
+.detail-card{
+  background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  --card-inset:16px;
 }
-.step-block h4{margin:0 0 8px;font-size:15px}
-.step-block p{margin:0;font-size:13px;line-height:1.75;color:#4A443D}
+.step-entry{padding:14px var(--card-inset);position:relative}
+.step-entry:not(:last-child)::after{
+  content:"";position:absolute;left:var(--card-inset);right:var(--card-inset);bottom:0;
+  border-bottom:1px solid var(--line);
+}
+.step-entry h4{margin:0 0 6px;font-size:14px;font-weight:700;color:var(--ink)}
+.step-entry p{margin:0;font-size:13px;line-height:1.75;color:#4A443D}
 .fig-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
 .book-fig{margin:0;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--bg)}
 .book-fig-btn{
@@ -353,12 +359,14 @@ function renderDetail(exp) {
 
       <section class="detail-section">
         <div class="label">🔬 实验过程</div>
-        ${steps.map((step, i) => `
-          <div class="step-block">
-            <h4>${step.title || "步骤 " + (i + 1)}</h4>
-            <p>${step.text}</p>
-          </div>
-        `).join("")}
+        <div class="detail-card">
+          ${steps.map((step, i) => `
+            <div class="step-entry">
+              <h4>${step.title || "步骤 " + (i + 1)}</h4>
+              <p>${step.text}</p>
+            </div>
+          `).join("")}
+        </div>
       </section>
 
       ${figures.length ? `
