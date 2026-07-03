@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" width="600" height="300">
+
+<style>
+  .bg { fill: #FAF7F0; }
+  .frame { fill: #FFFFFF; stroke: #E5DFD3; stroke-width: 2; }
+  .ink { fill: #2B2622; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+  .muted { fill: #9A9388; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+  .accent { fill: #7C7AE0; }
+  .accent2 { fill: #3AA984; }
+  .accent3 { fill: #E2566B; }
+  .line { stroke: #2B2622; stroke-width: 2; fill: none; }
+  .dash { stroke: #9A9388; stroke-width: 1.5; fill: none; stroke-dasharray: 6 4; }
+</style>
+
+<rect class="bg" width="600" height="300"/>
+<rect class="frame" x="40" y="40" width="520" height="220" rx="10"/>
+<text class="ink" x="130" y="100" font-size="13" text-anchor="middle">准备</text>
+<text class="ink" x="300" y="100" font-size="13" text-anchor="middle">操纵</text>
+<text class="ink" x="470" y="100" font-size="13" text-anchor="middle">测量</text>
+<line class="line" x1="180" y1="100" x2="240" y2="100"/>
+<line class="line" x1="350" y1="100" x2="410" y2="100"/>
+<text class="muted" x="300" y="180" font-size="13" text-anchor="middle">实验流程示意</text>
+</svg>

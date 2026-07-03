@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>心理学统计数理</title>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <style>
+    :root {
+      --bg: #FAF7F0;
+      --ink: #2B2622;
+      --muted: #9A9388;
+      --line: #E5DFD3;
+      --card: #FFFFFF;
+      --chip-bg: #F1ECE1;
+      --accent-mentor: #7C7AE0;
+      --accent-rupture: #E2566B;
+      --accent-inspire: #3AA984;
+
+      --bg-page: var(--bg);
+      --bg-surface: var(--bg);
+      --bg-elevated: var(--card);
+      --text-primary: var(--ink);
+      --text-secondary: var(--muted);
+      --text-tertiary: var(--muted);
+      --text-brand: var(--ink);
+      --border-default: var(--line);
+      --border-subtle: var(--line);
+      --interactive-primary-bg: var(--ink);
+      --interactive-primary-text: var(--card);
+
+      --spacing-2: 8px;
+      --spacing-3: 12px;
+      --spacing-4: 16px;
+      --spacing-5: 20px;
+      --spacing-6: 24px;
+      --spacing-8: 32px;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 14px;
+      --radius-pill: 999px;
+
+      --font-family: "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+      --font-heading-1: 700 21px/1.3 var(--font-family);
+      --font-heading-2: 700 18px/1.35 var(--font-family);
+      --font-body: 400 15px/1.6 var(--font-family);
+      --font-body-sm: 400 13px/1.65 var(--font-family);
+      --font-caption: 400 12px/1.4 var(--font-family);
+
+      --duration-fast: 150ms;
+      --easing-default: ease;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font: var(--font-body);
+      background: var(--bg-page);
+      color: var(--text-primary);
+    }
+
+    header {
+      background: var(--bg);
+      color: var(--ink);
+      padding: 20px 32px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    header h1 {
+      margin: 0 0 6px;
+      font: var(--font-heading-1);
+    }
+
+    header p {
+      margin: 0;
+      font: var(--font-body-sm);
+      color: var(--muted);
+      max-width: 720px;
+    }
+
+    .app-shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .app-body {
+      flex: 1;
+      display: flex;
+      min-height: 0;
+    }
+
+    .sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--bg);
+      border-right: 1px solid var(--line);
+      padding: 16px 12px;
+      overflow-y: auto;
+    }
+
+    .sidebar-label {
+      margin: 0 0 10px;
+      padding: 0 4px;
+      font: 600 11px/1 var(--font-family);
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .nav-item {
+      display: block;
+      width: 100%;
+      text-align: left;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: var(--card);
+      color: var(--ink);
+      cursor: pointer;
+      font: 500 13px/1.45 var(--font-family);
+      transition: border-color var(--duration-fast) var(--easing-default),
+                  background var(--duration-fast) var(--easing-default);
+    }
+
+    .nav-item:hover:not(:disabled) {
+      border-color: var(--ink);
+    }
+
+    .nav-item.active {
+      border-color: var(--ink);
+      background: var(--chip-bg);
+      font-weight: 700;
+    }
+
+    .nav-item:disabled {
+      opacity: 0.42;
+      cursor: not-allowed;
+      color: var(--muted);
+    }
+
+    .nav-item.placeholder {
+      min-height: 42px;
+    }
+
+    main {
+      flex: 1;
+      min-width: 0;
+      overflow: auto;
+      padding: 24px 32px 40px;
+    }
+
+    .view-panel {
+      display: none;
+    }
+
+    .view-panel.active {
+      display: block;
+    }
+
+    .view-head {
+      margin-bottom: var(--spacing-4);
+    }
+
+    .view-head h2 {
+      margin: 0 0 6px;
+      font: var(--font-heading-2);
+    }
+
+    .view-head p {
+      margin: 0;
+      font: var(--font-body-sm);
+      color: var(--muted);
+    }
+
+    .placeholder-card {
+      background: var(--card);
+      border: 1px dashed var(--line);
+      border-radius: var(--radius-lg);
+      padding: 48px 24px;
+      text-align: center;
+      color: var(--muted);
+      font: var(--font-body-sm);
+    }
+
+    .placeholder-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--ink);
+      font: var(--font-heading-2);
+    }
+
+    .tabs {
+      display: flex;
+      gap: var(--spacing-2);
+      flex-wrap: wrap;
+      margin-bottom: var(--spacing-4);
+    }
+
+    .tab {
+      border: 1px solid var(--line);
+      background: var(--card);
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      font: 500 13px/1 var(--font-family);
+      color: var(--ink);
+      transition: background var(--duration-fast) var(--easing-default),
+                  color var(--duration-fast) var(--easing-default),
+                  border-color var(--duration-fast) var(--easing-default);
+    }
+
+    .tab:hover {
+      border-color: var(--ink);
+    }
+
+    .tab.active {
+      background: var(--ink);
+      color: var(--card);
+      border-color: var(--ink);
+    }
+
+    .card {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-5);
+      margin-bottom: var(--spacing-6);
+    }
+
+    .card h2 {
+      margin: 0 0 var(--spacing-4);
+      font: var(--font-heading-2);
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: var(--spacing-4);
+      align-items: end;
+    }
+
+    label {
+      display: block;
+      font: 600 14px/1.4 var(--font-family);
+      margin-bottom: var(--spacing-2);
+      color: var(--text-primary);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--ink);
+    }
+
+    .value {
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: var(--spacing-3);
+      margin-top: var(--spacing-4);
+    }
+
+    .stat {
+      background: var(--chip-bg);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-3) var(--spacing-4);
+    }
+
+    .stat small {
+      display: block;
+      font: var(--font-caption);
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+
+    .stat strong {
+      font: 600 18px/1.2 var(--font-family);
+      color: var(--text-primary);
+    }
+
+    .charts {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .chart-panel {
+      padding: var(--spacing-4);
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chart-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 32px;
+      padding: 0 0 10px;
+    }
+
+    .chart-head h3 {
+      margin: 0;
+      font: 700 15px/1.4 var(--font-family);
+      color: var(--ink);
+      flex: 1;
+      min-width: 0;
+    }
+
+    .chart-legend {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-shrink: 0;
+      font: 400 12px/1.4 var(--font-family);
+      color: var(--muted);
+    }
+
+    .chart-legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .legend-line {
+      display: inline-block;
+      width: 20px;
+      border-top: 2px solid currentColor;
+    }
+
+    .legend-line.dashed {
+      border-top-style: dashed;
+      color: var(--muted);
+    }
+
+    .chart-panel + .chart-panel {
+      border-left: 1px solid var(--border-default);
+    }
+
+    .chart {
+      min-height: 494px;
+      height: 494px;
+    }
+
+    .card-charts {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .formula {
+      background: var(--chip-bg);
+      color: var(--ink);
+      padding: var(--spacing-4);
+      border-radius: var(--radius-md);
+      font: 500 14px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+      margin-top: var(--spacing-3);
+      border: 1px solid var(--line);
+    }
+
+    .gif-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--spacing-4);
+    }
+
+    .gif-grid figure {
+      margin: 0;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-3);
+    }
+
+    .gif-grid img {
+      width: 100%;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-subtle);
+      background: var(--bg-elevated);
+      display: block;
+    }
+
+    .gif-grid figcaption {
+      margin-top: var(--spacing-2);
+      font: var(--font-caption);
+      color: var(--text-secondary);
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .charts { grid-template-columns: 1fr; }
+      .chart-panel + .chart-panel {
+        border-left: none;
+        border-top: 1px solid var(--border-default);
+      }
+      .app-body { flex-direction: column; }
+      .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--line);
+        padding: 12px 16px;
+      }
+      .sidebar-nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .nav-item { width: auto; flex: 1 1 160px; }
+      main { padding: var(--spacing-4); }
+      header { padding: var(--spacing-4); }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header>
+      <h1>心理学统计数理</h1>
+      <p>公式图解与数据计算可视化，左侧目录切换不同主题。</p>
+    </header>
+
+    <div class="app-body">
+      <aside class="sidebar">
+        <p class="sidebar-label">目录</p>
+        <nav class="sidebar-nav" id="sidebarNav">
+          <button type="button" class="nav-item active" data-view="linear-transform">方差、标准差的线性变换</button>
+          <button type="button" class="nav-item placeholder" disabled>更多公式图解 · 即将上线</button>
+          <button type="button" class="nav-item placeholder" disabled>更多公式图解 · 即将上线</button>
+          <button type="button" class="nav-item placeholder" disabled>更多公式图解 · 即将上线</button>
+        </nav>
+      </aside>
+
+      <main>
+        <div id="view-linear-transform" class="view-panel active">
+          <div class="view-head">
+            <h2>方差、标准差的线性变换</h2>
+            <p>四种变换：X + C · X × D · X×D + C · (X + C)×D</p>
+          </div>
+
+    <div class="tabs">
+      <button class="tab active" data-mode="add">① 平移 X + C</button>
+      <button class="tab" data-mode="mul">② 拉伸 X × D</button>
+      <button class="tab" data-mode="comb">③ 先乘后加 X×D + C</button>
+      <button class="tab" data-mode="comb2">④ 先加后乘 (X + C)×D</button>
+    </div>
+
+    <section class="card">
+      <div class="controls">
+        <div id="control-c">
+          <label>常数 C = <span class="value" id="c-val">0</span></label>
+          <input id="slider-c" type="range" min="0" max="100" step="2" value="0" />
+        </div>
+        <div id="control-d">
+          <label>常数 D = <span class="value" id="d-val">0.50</span></label>
+          <input id="slider-d" type="range" min="0.5" max="3" step="0.05" value="0.5" />
+        </div>
+        <div id="control-frame" style="display:none">
+          <label>
+            变换进度（帧 <span class="value" id="frame-val">0</span>/50）
+            · C = <span class="value" id="frame-c">0</span>
+            · D = <span class="value" id="frame-d">0.50</span>
+          </label>
+          <input id="slider-frame" type="range" min="0" max="50" step="1" value="0" />
+        </div>
+      </div>
+      <div class="formula" id="formula">Y = X + 0</div>
+      <div class="stats">
+        <div class="stat"><small>均值</small><strong id="stat-mean">—</strong></div>
+        <div class="stat"><small>标准差</small><strong id="stat-std">—</strong></div>
+        <div class="stat"><small>方差</small><strong id="stat-var">—</strong></div>
+        <div class="stat"><small>规律提示</small><strong id="stat-tip" style="font-size:0.95rem;">—</strong></div>
+      </div>
+    </section>
+
+    <section class="card card-charts">
+      <div class="charts">
+        <div class="chart-panel">
+          <div class="chart-head">
+            <h3 id="box-chart-title">箱线图</h3>
+          </div>
+          <div id="box-chart" class="chart"></div>
+        </div>
+        <div class="chart-panel">
+          <div class="chart-head">
+            <h3 id="kde-chart-title">核密度曲线</h3>
+            <div class="chart-legend">
+              <span><i class="legend-line" id="legend-transformed"></i>变换后</span>
+              <span><i class="legend-line dashed"></i>原始分布</span>
+            </div>
+          </div>
+          <div id="kde-chart" class="chart"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>预生成动画 GIF</h2>
+      <div class="gif-grid">
+        <figure>
+          <img src="../平移动画_加常数C.gif" alt="平移动画" />
+          <figcaption>平移：加常数 C</figcaption>
+        </figure>
+        <figure>
+          <img src="../拉伸动画_乘常数D.gif" alt="拉伸动画" />
+          <figcaption>拉伸：乘常数 D</figcaption>
+        </figure>
+        <figure>
+          <img src="../组合变换_先乘后加_X乘D加C.gif" alt="先乘后加" />
+          <figcaption>③ 先乘后加：Y = X×D + C</figcaption>
+        </figure>
+        <figure>
+          <img src="../组合变换_先加后乘_X加C乘D.gif" alt="先加后乘" />
+          <figcaption>④ 先加后乘：Y = (X + C)×D</figcaption>
+        </figure>
+      </div>
+    </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    function initSidebarNav() {
+      document.querySelectorAll(".nav-item:not(:disabled)").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const viewId = btn.dataset.view;
+          if (!viewId) return;
+          document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          document.querySelectorAll(".view-panel").forEach(p => p.classList.remove("active"));
+          const panel = document.getElementById("view-" + viewId);
+          if (panel) panel.classList.add("active");
+          if (viewId === "linear-transform") {
+            requestAnimationFrame(() => {
+              ["box-chart", "kde-chart"].forEach(id => {
+                const el = document.getElementById(id);
+                if (el && el.data) Plotly.Plots.resize(el);
+              });
+              render();
+            });
+          }
+        });
+      });
+    }
+
+    const X = [54.96714153011233, 48.61735698828815, 56.47688538100692, 65.23029856408026, 47.658466252766644, 47.6586304305082, 65.79212815507391, 57.67434729152909, 45.30525614065048, 55.42560043585965, 45.365823071875376, 45.34270246429743, 52.41962271566034, 30.86719755342202, 32.75082167486967, 44.377124707590276, 39.87168879665576, 53.142473325952736, 40.91975924478789, 35.87696298664709, 64.65648768921554, 47.74223699513465, 50.67528204687924, 35.75251813786543, 44.556172754748175, 51.10922589709866, 38.49006422577697, 53.75698018345672, 43.99361310081195, 47.083062502067236, 43.98293387770603, 68.52278184508938, 49.86502775262066, 39.422890710441, 58.22544912103189, 37.791563500289776, 52.08863595004755, 30.403298761202244, 36.71813951101569, 51.96861235869123, 57.38466579995411, 51.7136828118997, 48.843517176117594, 46.98896304410711, 35.214780096325725, 42.801557916052914, 45.393612290402125, 60.57122226218916, 53.43618289568462, 32.36959844637266, 53.24083969394795, 46.149177195836835, 43.23077999694041, 56.11676288840868, 60.30999522495951, 59.31280119116199, 41.607824767773614, 46.907876241487855, 53.31263431403564, 59.75545127122359, 45.2082576215471, 48.14341023336183, 38.93665025993972, 38.037933759193294, 58.125258223941984, 63.56240028570823, 49.27989878419666, 60.03532897892024, 53.61636025047634, 43.54880245394876, 53.61395605508414, 65.38036566465969, 49.64173960890049, 65.64643655814007, 23.802548959102555, 58.21902504375224, 50.870470682381715, 47.00992649534132, 50.91760776535502, 30.124310853991073, 47.80328112162488, 53.57112571511746, 64.77894044741517, 44.81729781726352, 41.91506397106812, 44.982429564154636, 59.15402117702074, 53.287511096596845, 44.70239796232961, 55.13267433113356, 50.9707754934804, 59.68644990532889, 42.979469061226474, 46.723378534022316, 46.078918468678424, 35.364850518678814, 52.96120277064576, 52.610552721798896, 50.05113456642461, 47.654128666248525, 35.84629257949586, 45.79354677234641, 46.572854834732304, 41.977227307783814, 48.387142883339905, 54.040508568145384, 68.8618590121053, 51.74577812831839, 52.57550390722764, 49.25554084233833, 30.812287847009586, 49.73486124550783, 50.60230209941027, 74.63242112485287, 48.076390352188774, 53.015473423336125, 49.65288230294757, 38.31321962380468, 61.42822814515021, 57.51933032686774, 57.910319470430466, 40.90612545205261, 64.02794310936099, 35.98148937207719, 55.868570938002705, 71.90455625809979, 40.09463674869312, 44.33702270397228, 50.99651365087641, 44.96524345883801, 34.493365689338674, 50.68562974806027, 39.37696286273895, 54.73592430635182, 40.805757657661964, 65.4993440501754, 42.16746707663763, 46.77938483794325, 58.135172173696695, 37.69135683566045, 52.27459934604129, 63.07142754282428, 33.92516765438772, 51.84633858532304, 52.598827942484235, 57.8182287177731, 37.63049289121918, 36.795433869157236, 55.21941565616898, 52.96984673233186, 52.504928503458764, 53.46448209496976, 43.19975278421509, 52.322536971610035, 52.93072473298681, 42.85648581973632, 68.65774511144757, 54.73832920911788, 38.08696502797351, 56.5655360863383, 40.253183297726785, 57.87084603742452, 61.58595579007404, 41.7931768164829, 59.63376129244322, 54.12780926936498, 58.2206015999449, 68.96792982653947, 47.54611883997129, 42.4626383564251, 41.10485570374477, 41.841897150345616, 49.228982905858956, 53.411519748166434, 52.766907993300194, 58.27183249036024, 50.13001891877907, 64.53534077157317, 47.35343166762044, 77.20169166589619, 56.25667347765006, 41.42842443583717, 39.29107501938888, 54.824724152431855, 47.76537214674149, 57.14000494092092, 54.73237624573545, 49.271710873431275, 41.532062819315954, 34.851527753141355, 45.53485047932979, 58.56398794323472, 52.14093744130204, 37.54261221288012, 51.73180925851182, 53.85317379728837, 41.16142563798867, 51.53725105945528, 50.58208718446, 38.57029702169377];
+
+    let mode = "add";
+
+    // 与 generate_transform_gifs.py 完全一致的参数与坐标轴
+    const MODE_CONFIG = {
+      add: {
+        xRange: [0, 160],
+        kdeYRange: [0, 0.06],
+        showOriginal: true,
+        getParams() {
+          const c = Number(document.getElementById("slider-c").value);
+          return { c, d: 1, frame: c / 2 };
+        },
+      },
+      mul: {
+        xRange: [-30, 180],
+        kdeYRange: [0, 0.08],
+        showOriginal: true,
+        getParams() {
+          const d = Number(document.getElementById("slider-d").value);
+          return { c: 0, d, frame: (d - 0.5) / 0.05 };
+        },
+      },
+      comb: {
+        xRange: [-30, 250],
+        kdeYRange: [0, 0.08],
+        showOriginal: true,
+        getParams() {
+          const frame = Number(document.getElementById("slider-frame").value);
+          return { c: frame * 1.5, d: 0.5 + frame * 0.04, frame };
+        },
+      },
+      comb2: {
+        xRange: [-30, 280],
+        kdeYRange: [0, 0.08],
+        showOriginal: true,
+        getParams() {
+          const frame = Number(document.getElementById("slider-frame").value);
+          return { c: frame * 1.5, d: 0.5 + frame * 0.04, frame };
+        },
+      },
+    };
+
+    function updateControls() {
+      const cfg = MODE_CONFIG[mode];
+      document.getElementById("control-c").style.display = mode === "add" ? "block" : "none";
+      document.getElementById("control-d").style.display = mode === "mul" ? "block" : "none";
+      document.getElementById("control-frame").style.display =
+        mode === "comb" || mode === "comb2" ? "block" : "none";
+    }
+
+    function resetSlidersForMode() {
+      if (mode === "add") {
+        document.getElementById("slider-c").value = "0";
+      } else if (mode === "mul") {
+        document.getElementById("slider-d").value = "0.5";
+      } else {
+        document.getElementById("slider-frame").value = "0";
+      }
+    }
+
+    function mean(arr) {
+      return arr.reduce((a, b) => a + b, 0) / arr.length;
+    }
+
+    function std(arr) {
+      const m = mean(arr);
+      return Math.sqrt(arr.reduce((s, v) => s + (v - m) ** 2, 0) / arr.length);
+    }
+
+    function varp(arr) {
+      const m = mean(arr);
+      return arr.reduce((s, v) => s + (v - m) ** 2, 0) / arr.length;
+    }
+
+    function transform(c, d) {
+      if (mode === "add") return X.map(v => v + c);
+      if (mode === "mul") return X.map(v => v * d);
+      if (mode === "comb") return X.map(v => v * d + c);
+      return X.map(v => (v + c) * d);
+    }
+    function modeColor() {
+      if (mode === "add") return "#4A90D9";
+      if (mode === "mul") return "#3AA984";
+      if (mode === "comb") return "#7C7AE0";
+      return "#E2566B";
+    }
+
+    function modeBoxColor() {
+      if (mode === "add") return "#E3F0FB";
+      if (mode === "mul") return "#E8F5EF";
+      if (mode === "comb") return "#EEEEF8";
+      return "#FCEEF0";
+    }
+
+    function hexToRgba(hex, alpha) {
+      const h = hex.replace("#", "");
+      const r = parseInt(h.slice(0, 2), 16);
+      const g = parseInt(h.slice(2, 4), 16);
+      const b = parseInt(h.slice(4, 6), 16);
+      return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    const PLOT_FONT = '"Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif';
+    const PLOT_GRID = "#E5DFD3";
+    const PLOT_MUTED = "#9A9388";
+    const PLOT_MEAN = "#E2566B";
+    const PLOT_STD = "#7C7AE0";
+
+    const CHART_MARGIN = { t: 16, r: 24, b: 68, l: 64 };
+
+    function baseLayout() {
+      return {
+        paper_bgcolor: "#FAF7F0",
+        plot_bgcolor: "#FAF7F0",
+        font: { family: PLOT_FONT, color: "#2B2622", size: 13 },
+        margin: CHART_MARGIN,
+        autosize: true,
+      };
+    }
+
+    function xaxisConfig(xMin, xMax) {
+      return {
+        title: { text: "数值", standoff: 10, font: { size: 13, color: "#2B2622", family: PLOT_FONT } },
+        range: [xMin, xMax],
+        gridcolor: PLOT_GRID,
+        linecolor: PLOT_GRID,
+        zerolinecolor: PLOT_GRID,
+      };
+    }
+
+    function kde(values, points = 200) {
+      const n = values.length;
+      const sd = std(values) || 1;
+      const bandwidth = 1.06 * sd * Math.pow(n, -0.2);
+      const min = Math.min(...values) - 4 * bandwidth;
+      const max = Math.max(...values) + 4 * bandwidth;
+      const xs = Array.from({ length: points }, (_, i) => min + (max - min) * i / (points - 1));
+      const coeff = 1 / (n * bandwidth * Math.sqrt(2 * Math.PI));
+      const ys = xs.map(x => {
+        let sum = 0;
+        for (const v of values) {
+          const z = (x - v) / bandwidth;
+          sum += Math.exp(-0.5 * z * z);
+        }
+        return coeff * sum;
+      });
+      return { xs, ys };
+    }
+
+    function render() {
+      const cfg = MODE_CONFIG[mode];
+      const { c, d, frame } = cfg.getParams();
+      const Y = transform(c, d);
+      const m = mean(Y);
+      const s = std(Y);
+      const v = varp(Y);
+      const [xMin, xMax] = cfg.xRange;
+      const [yMin, yMax] = cfg.kdeYRange;
+
+      document.getElementById("c-val").textContent = c.toFixed(0);
+      document.getElementById("d-val").textContent = d.toFixed(2);
+      document.getElementById("frame-val").textContent = String(Math.round(frame));
+      document.getElementById("frame-c").textContent = c.toFixed(0);
+      document.getElementById("frame-d").textContent = d.toFixed(2);
+      document.getElementById("stat-mean").textContent = m.toFixed(1);
+      document.getElementById("stat-std").textContent = s.toFixed(1);
+      document.getElementById("stat-var").textContent = v.toFixed(1);
+
+      if (mode === "add") {
+        document.getElementById("formula").textContent = `Y = X + ${c.toFixed(0)}`;
+        document.getElementById("stat-tip").textContent = "均值 +C，标准差与方差不变";
+      } else if (mode === "mul") {
+        document.getElementById("formula").textContent = `Y = X × ${d.toFixed(2)}`;
+        document.getElementById("stat-tip").textContent = "均值、标准差 ×D，方差 ×D²";
+      } else if (mode === "comb") {
+        document.getElementById("formula").textContent = `Y = X × ${d.toFixed(2)} + ${c.toFixed(0)}`;
+        document.getElementById("stat-tip").textContent = "C 与 D 同步变化（与 GIF 一致）";
+      } else {
+        document.getElementById("formula").textContent = `Y = (X + ${c.toFixed(0)}) × ${d.toFixed(2)}`;
+        document.getElementById("stat-tip").textContent = "C 与 D 同步变化（与 GIF 一致）";
+      }
+
+      const color = modeColor();
+      const fill = modeBoxColor();
+
+      const boxTitle = `箱线图 · 均值 ${m.toFixed(1)}  标准差 ${s.toFixed(1)}  方差 ${v.toFixed(1)}`;
+      const kdeTitle = mode === "add"
+        ? "核密度曲线（形状完全不变）"
+        : mode === "mul"
+          ? "核密度曲线（形状拉伸/压缩）"
+          : mode === "comb"
+            ? "先乘后加：X×D + C"
+            : "先加后乘：(X + C) × D";
+
+      document.getElementById("box-chart-title").textContent = boxTitle;
+      document.getElementById("kde-chart-title").textContent = kdeTitle;
+      document.getElementById("legend-transformed").style.color = color;
+
+      const boxTrace = {
+        type: "box",
+        orientation: "h",
+        x: Y,
+        name: "变换后",
+        boxpoints: false,
+        fillcolor: fill,
+        line: { color, width: 1.5 },
+        whiskerwidth: 0.6,
+        showlegend: false,
+      };
+
+      const boxLayout = {
+        ...baseLayout(),
+        xaxis: xaxisConfig(xMin, xMax),
+        yaxis: {
+          showticklabels: false,
+          gridcolor: PLOT_GRID,
+          linecolor: PLOT_GRID,
+          zeroline: false,
+        },
+        shapes: [
+          {
+            type: "line",
+            xref: "x",
+            yref: "paper",
+            x0: m,
+            x1: m,
+            y0: 0,
+            y1: 1,
+            line: { color: PLOT_MEAN, dash: "dash", width: 2 },
+          },
+          {
+            type: "line",
+            xref: "x",
+            yref: "paper",
+            x0: m - s,
+            x1: m - s,
+            y0: 0,
+            y1: 1,
+            line: { color: PLOT_STD, dash: "dot", width: 1.5 },
+          },
+          {
+            type: "line",
+            xref: "x",
+            yref: "paper",
+            x0: m + s,
+            x1: m + s,
+            y0: 0,
+            y1: 1,
+            line: { color: PLOT_STD, dash: "dot", width: 1.5 },
+          },
+        ],
+        showlegend: false,
+      };
+
+      Plotly.react("box-chart", [boxTrace], boxLayout, { responsive: true, displayModeBar: false });
+
+      const { xs, ys } = kde(Y);
+      const kdeTraces = [{
+        x: xs,
+        y: ys,
+        type: "scatter",
+        mode: "lines",
+        fill: "tozeroy",
+        name: "变换后",
+        line: { color, width: 2, shape: "spline" },
+        fillcolor: hexToRgba(color, 0.35),
+        hoverinfo: "skip",
+      }];
+
+      if (cfg.showOriginal) {
+        const orig = kde(X);
+        kdeTraces.push({
+          x: orig.xs,
+          y: orig.ys,
+          type: "scatter",
+          mode: "lines",
+          name: "原始分布",
+          line: { color: PLOT_MUTED, dash: "dash", width: 1.5, shape: "spline" },
+          hoverinfo: "skip",
+        });
+      }
+
+      const kdeLayout = {
+        ...baseLayout(),
+        xaxis: xaxisConfig(xMin, xMax),
+        yaxis: {
+          title: "密度",
+          range: [yMin, yMax],
+          gridcolor: PLOT_GRID,
+          linecolor: PLOT_GRID,
+          zerolinecolor: PLOT_GRID,
+        },
+        shapes: [{
+          type: "line",
+          xref: "x",
+          yref: "y",
+          x0: m,
+          x1: m,
+          y0: yMin,
+          y1: yMax,
+          line: { color: PLOT_MEAN, dash: "dash", width: 2 },
+        }],
+        showlegend: false,
+      };
+
+      Plotly.react("kde-chart", kdeTraces, kdeLayout, { responsive: true, displayModeBar: false });
+    }
+
+    document.querySelectorAll(".tab").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        mode = btn.dataset.mode;
+        resetSlidersForMode();
+        updateControls();
+        render();
+      });
+    });
+
+    document.getElementById("slider-c").addEventListener("input", render);
+    document.getElementById("slider-d").addEventListener("input", render);
+    document.getElementById("slider-frame").addEventListener("input", render);
+    initSidebarNav();
+    updateControls();
+    render();
+  </script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" width="600" height="300">
+
+<style>
+  .bg { fill: #FAF7F0; }
+  .frame { fill: #FFFFFF; stroke: #E5DFD3; stroke-width: 2; }
+  .ink { fill: #2B2622; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+  .muted { fill: #9A9388; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+  .accent { fill: #7C7AE0; }
+  .accent2 { fill: #3AA984; }
+  .accent3 { fill: #E2566B; }
+  .line { stroke: #2B2622; stroke-width: 2; fill: none; }
+  .dash { stroke: #9A9388; stroke-width: 1.5; fill: none; stroke-dasharray: 6 4; }
+</style>
+
+<rect class="bg" width="600" height="300"/>
+<rect class="frame" x="40" y="30" width="520" height="260" rx="10"/>
+<ellipse class="accent2" cx="150" cy="150" rx="80" ry="50" opacity="0.35"/>
+<text class="ink" x="150" y="155" font-size="12" text-anchor="middle">实验犬</text>
+<rect class="frame" x="320" y="80" width="100" height="50" rx="10"/>
+<text class="ink" x="370" y="110" font-size="12" text-anchor="middle">铃声 CS</text>
+<rect class="frame" x="320" y="170" width="100" height="50" rx="10"/>
+<text class="ink" x="370" y="200" font-size="12" text-anchor="middle">食物 US</text>
+<text class="muted" x="150" y="230" font-size="12" text-anchor="middle">唾液分泌记录（非条件反应 / 条件反应）</text>
+</svg>

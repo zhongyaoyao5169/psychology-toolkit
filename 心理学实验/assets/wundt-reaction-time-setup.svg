@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" width="600" height="300">
+
+<style>
+  .bg { fill: #FAF7F0; }
+  .frame { fill: #FFFFFF; stroke: #E5DFD3; stroke-width: 2; }
+  .ink { fill: #2B2622; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+  .muted { fill: #9A9388; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+  .accent { fill: #7C7AE0; }
+  .accent2 { fill: #3AA984; }
+  .accent3 { fill: #E2566B; }
+  .line { stroke: #2B2622; stroke-width: 2; fill: none; }
+  .dash { stroke: #9A9388; stroke-width: 1.5; fill: none; stroke-dasharray: 6 4; }
+</style>
+
+<rect class="bg" width="600" height="300"/>
+<rect class="frame" x="40" y="30" width="520" height="260" rx="10"/>
+<text class="ink" x="280" y="58" font-size="15" text-anchor="middle">莱比锡心理学实验室 · 隔音反应室</text>
+<rect class="frame" x="80" y="90" width="160" height="120" rx="10"/>
+<text class="muted" x="160" y="115" font-size="12" text-anchor="middle">刺激呈现器</text>
+<text class="ink" x="160" y="140" font-size="13" text-anchor="middle">光 / 声</text>
+<rect class="frame" x="360" y="90" width="160" height="120" rx="10"/>
+<text class="muted" x="440" y="115" font-size="12" text-anchor="middle">反应键</text>
+<text class="ink" x="440" y="145" font-size="13" text-anchor="middle">按键记录</text>
+<circle class="accent" cx="280" cy="150" r="28" opacity="0.5"/>
+<text class="ink" x="280" y="155" font-size="12" text-anchor="middle">被试</text>
+<line class="line" x1="240" y1="150" x2="200" y2="150"/>
+<line class="line" x1="320" y1="150" x2="360" y2="150"/>
+<text class="muted" x="280" y="230" font-size="12" text-anchor="middle">计时器记录：刺激 onset → 反应 onset（毫秒）</text>
+</svg>

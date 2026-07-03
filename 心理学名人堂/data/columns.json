@@ -1,0 +1,142 @@
+[
+  {
+    "key": "struct",
+    "zh": "构造主义",
+    "en": "STRUCTURALISM",
+    "full": "构造主义心理学",
+    "isSchool": true
+  },
+  {
+    "key": "func",
+    "zh": "机能主义",
+    "en": "FUNCTIONALISM",
+    "full": "机能主义心理学",
+    "isSchool": true
+  },
+  {
+    "key": "behav",
+    "zh": "行为主义",
+    "en": "BEHAVIORISM",
+    "full": "行为主义心理学",
+    "isSchool": true
+  },
+  {
+    "key": "gestalt",
+    "zh": "格式塔",
+    "en": "GESTALT",
+    "full": "格式塔心理学",
+    "isSchool": true
+  },
+  {
+    "key": "psycho",
+    "zh": "精神分析",
+    "en": "PSYCHOANALYSIS",
+    "full": "精神分析心理学",
+    "isSchool": true
+  },
+  {
+    "key": "human",
+    "zh": "人本主义",
+    "en": "HUMANISTIC",
+    "full": "人本主义心理学",
+    "isSchool": true
+  },
+  {
+    "key": "cog",
+    "zh": "认知心理学",
+    "en": "COGNITIVE",
+    "full": "认知心理学",
+    "isSchool": true
+  },
+  {
+    "key": "psychophysics",
+    "zh": "心理物理学",
+    "en": "PSYCHOPHYSICS",
+    "full": "心理物理学",
+    "isSchool": false
+  },
+  {
+    "key": "physio",
+    "zh": "生理心理学",
+    "en": "PHYSIOLOGICAL",
+    "full": "生理心理学",
+    "isSchool": false
+  },
+  {
+    "key": "experimental",
+    "zh": "实验心理学",
+    "en": "EXPERIMENTAL",
+    "full": "实验心理学",
+    "isSchool": false
+  },
+  {
+    "key": "edu",
+    "zh": "科学教育学",
+    "en": "EDUCATION",
+    "full": "科学教育学",
+    "isSchool": false
+  },
+  {
+    "key": "measure",
+    "zh": "心理测量",
+    "en": "PSYCHOMETRICS",
+    "full": "心理测量",
+    "isSchool": false
+  },
+  {
+    "key": "stats",
+    "zh": "心理统计",
+    "en": "PSYCH STATS",
+    "full": "心理统计",
+    "isSchool": false
+  },
+  {
+    "key": "dev",
+    "zh": "毕生发展",
+    "en": "DEVELOPMENTAL",
+    "full": "毕生发展",
+    "isSchool": false
+  },
+  {
+    "key": "learn",
+    "zh": "学习心理",
+    "en": "LEARNING",
+    "full": "学习心理",
+    "isSchool": false
+  },
+  {
+    "key": "social",
+    "zh": "社会心理",
+    "en": "SOCIAL",
+    "full": "社会心理",
+    "isSchool": false
+  },
+  {
+    "key": "mgmt",
+    "zh": "管理心理",
+    "en": "ORGANIZATIONAL",
+    "full": "管理心理",
+    "isSchool": false
+  },
+  {
+    "key": "positive",
+    "zh": "积极心理学",
+    "en": "POSITIVE",
+    "full": "积极心理学",
+    "isSchool": false
+  },
+  {
+    "key": "neuro",
+    "zh": "神经心理学",
+    "en": "NEUROPSYCHOLOGY",
+    "full": "神经心理学",
+    "isSchool": false
+  },
+  {
+    "key": "ethology",
+    "zh": "动物行为学",
+    "en": "ETHOLOGY",
+    "full": "动物行为学",
+    "isSchool": false
+  }
+]

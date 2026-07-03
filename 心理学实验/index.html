@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>心理学实验</title>
+<style>
+:root{
+  --bg:#FAF7F0;--ink:#2B2622;--muted:#9A9388;--line:#E5DFD3;--card:#FFFFFF;
+  --chip-bg:#F1ECE1;--sidebar-w:220px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;
+  font-family:"Helvetica Neue","PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg);color:var(--ink);
+  display:flex;flex-direction:column;
+}
+.header{
+  padding:20px 28px 12px;border-bottom:1px solid var(--line);
+  background:var(--bg);flex-shrink:0;
+}
+.header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.header h1{margin:0;font-size:21px}
+.header p{margin:6px 0 12px;font-size:13px;color:var(--muted);line-height:1.65;max-width:920px}
+.stats{font-size:12px;color:var(--muted);white-space:nowrap;padding-top:4px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:8px}
+.search-wrap{position:relative;flex:1;min-width:200px;max-width:320px}
+.search-wrap input{
+  width:100%;padding:8px 12px 8px 34px;border:1px solid var(--line);border-radius:8px;
+  background:#fff;font-size:13px;outline:none;
+}
+.search-wrap input:focus{border-color:var(--ink)}
+.search-wrap::before{
+  content:"🔍";position:absolute;left:10px;top:50%;transform:translateY(-50%);
+  font-size:13px;opacity:.5;
+}
+.filters{display:flex;gap:6px;flex-wrap:wrap;padding-bottom:4px}
+.f-chip{
+  padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:#fff;
+  font-size:12px;cursor:pointer;user-select:none;transition:all .15s;white-space:nowrap;
+}
+.f-chip:hover{border-color:var(--ink)}
+.f-chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.app-body{flex:1;display:flex;min-height:0}
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;border-right:1px solid var(--line);
+  background:var(--bg);display:flex;flex-direction:column;min-height:0;
+}
+.sidebar-label{
+  margin:0;padding:12px 14px 8px;font-size:11px;font-weight:700;color:var(--muted);
+  letter-spacing:.06em;text-transform:uppercase;
+}
+.sidebar-nav{
+  flex:1;overflow-y:auto;padding:0 10px 16px;
+  scrollbar-width:thin;scrollbar-color:rgba(107,99,88,.5) transparent;
+}
+.nav-item{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:8px;
+  width:100%;text-align:left;padding:9px 11px;margin-bottom:6px;
+  border:1px solid var(--line);border-radius:8px;background:var(--card);
+  color:var(--ink);cursor:pointer;font-family:inherit;font-size:14px;line-height:1.45;font-weight:400;
+  transition:border-color .15s,background .15s;
+}
+.nav-item:not(.active){font-weight:400}
+.nav-item:not(.active) span{font-weight:400}
+.nav-item:hover{border-color:var(--ink)}
+.nav-item.active{border-color:var(--ink);background:var(--chip-bg);font-weight:700}
+.nav-item .nav-year{font-size:10px;color:var(--muted);white-space:nowrap;padding-top:2px}
+.content{flex:1;min-width:0;overflow-y:auto;padding:20px 28px 48px}
+.content-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;
+}
+.exp-card{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;
+  padding:16px 18px;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s;
+  display:flex;flex-direction:column;gap:8px;
+}
+.exp-card:hover{border-color:var(--ink);box-shadow:0 6px 20px rgba(0,0,0,.06);transform:translateY(-1px)}
+.exp-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.exp-card h2{margin:0;font-size:16px;line-height:1.35;flex:1}
+.exp-year{font-size:11px;color:var(--muted);white-space:nowrap;padding-top:2px}
+.exp-tag{
+  display:inline-block;font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;
+  background:var(--chip-bg);color:#6B6358;align-self:flex-start;
+}
+.exp-tag.perception{background:#EEEEF8;color:#5A58A8}
+.exp-tag.memory,.exp-tag.learning{background:#E8F5EF;color:#2A8068}
+.exp-tag.behavior{background:#FCEEF0;color:#B84558}
+.exp-tag.social{background:#FDF3E7;color:#9A6520}
+.exp-tag.cognitive{background:#E3F0FB;color:#2E6FA8}
+.exp-tag.development{background:#F3ECF8;color:#7A5098}
+.exp-tag.applied{background:var(--chip-bg);color:#6B6358}
+.exp-tag.physio{background:#E8F5EF;color:#2A8068}
+.exp-tag.experimental{background:#EDEAE4;color:var(--ink)}
+.exp-researcher{font-size:12px;color:var(--muted)}
+.exp-summary{margin:0;font-size:13px;line-height:1.6;color:#4A443D}
+.empty-state{padding:60px 20px;text-align:center;color:var(--muted);font-size:14px}
+.detail{max-width:820px}
+.detail-head{margin-bottom:24px}
+.detail-head h2{margin:0 0 8px;font-size:24px;line-height:1.3}
+.detail-meta{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:10px}
+.detail-lead{font-size:15px;line-height:1.7;color:#4A443D;font-weight:600;margin:0}
+.detail-source{font-size:11px;color:var(--muted);line-height:1.55;margin-top:4px}
+.detail-section{margin-bottom:28px}
+.detail-section .label{
+  font-size:12px;font-weight:700;color:var(--muted);margin-bottom:10px;
+  display:flex;align-items:center;gap:6px;
+}
+.detail-section .body{
+  font-size:14px;line-height:1.8;color:#4A443D;
+  background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;
+}
+.vars-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.var-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.var-card small{display:block;font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:700}
+.var-card span{font-size:13px;line-height:1.55}
+.step-block{
+  background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:12px;
+}
+.step-block h4{margin:0 0 8px;font-size:15px}
+.step-block p{margin:0;font-size:13px;line-height:1.75;color:#4A443D}
+.fig-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.book-fig{margin:0;border-radius:10px;overflow:hidden;border:1px solid var(--line);background:var(--bg)}
+.book-fig-btn{
+  display:block;width:100%;padding:0;border:none;background:transparent;cursor:zoom-in;
+  position:relative;
+}
+.book-fig-btn::after{
+  content:"点击放大";position:absolute;right:10px;bottom:10px;
+  font-size:11px;color:#fff;background:rgba(43,38,34,.72);padding:3px 8px;border-radius:999px;
+  opacity:0;transition:opacity .15s;pointer-events:none;
+}
+.book-fig-btn:hover::after,.book-fig-btn:focus-visible::after{opacity:1}
+.book-fig img{display:block;width:100%;height:auto}
+.book-fig-cap{padding:8px 12px;font-size:12px;color:#4A443D;border-top:1px solid var(--line);background:var(--card);line-height:1.5}
+.book-fig-cap small{display:block;color:var(--muted);margin-top:2px}
+.img-lightbox{
+  position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;
+  padding:24px;
+}
+.img-lightbox[hidden]{display:none}
+.img-lightbox-backdrop{
+  position:absolute;inset:0;background:rgba(43,38,34,.82);cursor:zoom-out;
+}
+.img-lightbox-panel{
+  position:relative;z-index:1;max-width:min(96vw,1100px);max-height:92vh;
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+}
+.img-lightbox-panel img{
+  display:block;max-width:100%;max-height:calc(92vh - 48px);width:auto;height:auto;
+  border-radius:10px;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.35);
+}
+.img-lightbox-cap{
+  margin:0;max-width:720px;text-align:center;font-size:13px;line-height:1.55;color:#FAF7F0;
+}
+.img-lightbox-close{
+  position:absolute;top:16px;right:16px;z-index:2;
+  width:40px;height:40px;border:none;border-radius:999px;
+  background:rgba(255,255,255,.15);color:#fff;font-size:24px;line-height:1;cursor:pointer;
+}
+.img-lightbox-close:hover{background:rgba(255,255,255,.28)}
+.detail-nav{display:flex;gap:10px;margin-top:32px;padding-top:20px;border-top:1px solid var(--line)}
+.detail-nav button{
+  padding:8px 14px;border:1px solid var(--line);border-radius:8px;background:#fff;
+  font-size:13px;cursor:pointer;color:var(--ink);
+}
+.detail-nav button:hover{border-color:var(--ink)}
+.detail-nav button.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+@media(max-width:900px){
+  .app-body{flex-direction:column}
+  .sidebar{width:100%;border-right:none;border-bottom:1px solid var(--line);max-height:200px}
+  .content{padding:16px}
+  .header{padding:16px}
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-top">
+    <div>
+      <h1>心理学实验</h1>
+      <p>内容依据郭秀艳《实验心理学》（人民教育出版社）梳理经典研究：实验设计、过程说明与历史意义。教材中的图表/表格单独裁剪展示，其余均为文字说明。</p>
+    </div>
+    <div class="stats" id="stats"></div>
+  </div>
+  <div class="toolbar">
+    <div class="search-wrap">
+      <input type="search" id="searchInput" placeholder="搜索实验名称、研究者…" autocomplete="off">
+    </div>
+  </div>
+  <div class="filters" id="filters"></div>
+</div>
+
+<div class="app-body">
+  <aside class="sidebar">
+    <p class="sidebar-label">目录</p>
+    <nav class="sidebar-nav" id="sidebarNav"></nav>
+  </aside>
+  <div class="content" id="content"></div>
+</div>
+
+<div id="imgLightbox" class="img-lightbox" hidden aria-hidden="true" role="dialog" aria-modal="true" aria-label="放大查看图片">
+  <button type="button" class="img-lightbox-close" id="imgLightboxClose" aria-label="关闭">×</button>
+  <div class="img-lightbox-backdrop" id="imgLightboxBackdrop"></div>
+  <div class="img-lightbox-panel">
+    <img id="imgLightboxImg" alt="">
+    <p class="img-lightbox-cap" id="imgLightboxCap" hidden></p>
+  </div>
+</div>
+
+<script src="experiments.js"></script>
+<script>
+const CATEGORY_LABELS = {
+  all: "全部",
+  experimental: "实验心理学奠基",
+  perception: "感知与注意",
+  memory: "学习与记忆",
+  learning: "学习与记忆",
+  behavior: "条件反射与行为",
+  social: "社会心理学",
+  cognitive: "认知心理学",
+  development: "发展心理学",
+  applied: "应用与工业心理",
+  physio: "生理与神经",
+};
+
+let activeCategory = "all";
+let searchQuery = "";
+let viewMode = "grid";
+let activeId = null;
+
+function matchSearch(exp, q) {
+  if (!q) return true;
+  const parts = [exp.title, exp.researcher, exp.summary, exp.categoryLabel, exp.method, exp.finding,
+    exp.background, exp.participants, exp.resultsDetail, exp.sourceBook, exp.sourceChapter, exp.sourceSection].filter(Boolean);
+  return parts.join(" ").toLowerCase().includes(q.toLowerCase());
+}
+
+function filtered() {
+  return EXPERIMENTS.filter(exp => {
+    if (activeCategory !== "all" && exp.category !== activeCategory && !(activeCategory === "memory" && exp.category === "learning")) return false;
+    return matchSearch(exp, searchQuery);
+  }).sort((a, b) => (a.year || 0) - (b.year || 0));
+}
+
+function buildFilters() {
+  const cats = ["all", "experimental", "perception", "memory", "behavior", "social", "cognitive", "development", "physio", "applied"];
+  const el = document.getElementById("filters");
+  el.innerHTML = cats.map(c =>
+    `<button type="button" class="f-chip${c === activeCategory ? " active" : ""}" data-cat="${c}">${CATEGORY_LABELS[c] || c}</button>`
+  ).join("");
+  el.querySelectorAll(".f-chip").forEach(btn => {
+    btn.addEventListener("click", () => {
+      activeCategory = btn.dataset.cat;
+      if (activeId && !filtered().some(e => e.id === activeId)) {
+        viewMode = "grid";
+        activeId = null;
+      }
+      buildFilters();
+      render();
+    });
+  });
+}
+
+function buildSidebar() {
+  const list = filtered();
+  const nav = document.getElementById("sidebarNav");
+  const allActive = viewMode === "grid" && !activeId;
+  let html = `<button type="button" class="nav-item${allActive ? " active" : ""}" data-view="all">全部</button>`;
+  html += list.map(exp =>
+    `<button type="button" class="nav-item${activeId === exp.id ? " active" : ""}" data-id="${exp.id}">
+      <span>${exp.title}</span>
+      <span class="nav-year">${exp.year || ""}</span>
+    </button>`
+  ).join("");
+  nav.innerHTML = html;
+  nav.querySelector('[data-view="all"]')?.addEventListener("click", () => {
+    viewMode = "grid";
+    activeId = null;
+    render();
+  });
+  nav.querySelectorAll("[data-id]").forEach(btn => {
+    btn.addEventListener("click", () => openDetail(btn.dataset.id));
+  });
+}
+
+function renderGrid(list) {
+  if (!list.length) {
+    return '<div class="empty-state">没有匹配的实验，请调整搜索或筛选条件。</div>';
+  }
+  return `<div class="content-grid">${list.map(exp => `
+    <article class="exp-card" data-id="${exp.id}" tabindex="0" role="button">
+      <div class="exp-head">
+        <h2>${exp.title}</h2>
+        <span class="exp-year">${exp.year || ""}</span>
+      </div>
+      <span class="exp-tag ${exp.category}">${exp.categoryLabel}</span>
+      <div class="exp-researcher">${exp.researcher}</div>
+      <p class="exp-summary">${exp.summary}</p>
+    </article>
+  `).join("")}</div>`;
+}
+
+function bookFigure(fig) {
+  const png = fig.image;
+  const fallback = fig.fallback || png.replace(".png", ".svg");
+  const alt = fig.title || "教材插图";
+  const page = fig.bookPage ? `<small>教材 p.${fig.bookPage}</small>` : "";
+  const capText = (fig.title || alt) + (fig.bookPage ? ` · 教材 p.${fig.bookPage}` : "");
+  return `<figure class="book-fig">
+    <button type="button" class="book-fig-btn zoomable-img-btn" data-zoom-src="${png}" data-zoom-fallback="${fallback}" data-zoom-cap="${capText.replace(/"/g, "&quot;")}" aria-label="放大查看：${alt}">
+      <img src="${png}" alt="${alt}" loading="lazy" onerror="this.onerror=null;this.src='${fallback}'">
+    </button>
+    <figcaption class="book-fig-cap">${fig.title || alt}${page}</figcaption>
+  </figure>`;
+}
+
+function renderDetail(exp) {
+  const list = filtered();
+  const idx = list.findIndex(e => e.id === exp.id);
+  const steps = exp.steps || [
+    { title: "实验设计", text: exp.method },
+    { title: "主要发现", text: exp.finding },
+  ];
+  const figures = exp.figures || [];
+  const vars = exp.variables || {};
+  return `
+    <article class="detail">
+      <div class="detail-head">
+        <span class="exp-tag ${exp.category}">${exp.categoryLabel}</span>
+        <h2>${exp.title}</h2>
+        <div class="detail-meta">${exp.researcher}${exp.year ? " · " + exp.year + " 年" : ""}${exp.participants ? " · " + exp.participants : ""}</div>
+        <p class="detail-lead">${exp.summary}</p>
+        ${exp.sourceBook ? `<div class="detail-source">出处：${exp.sourceBook} · ${exp.sourceChapter || ""}${exp.sourceSection ? " · " + exp.sourceSection : ""}</div>` : ""}
+      </div>
+
+      ${exp.background ? `
+      <section class="detail-section">
+        <div class="label">📖 研究背景</div>
+        <div class="body">${exp.background}</div>
+      </section>` : ""}
+
+      ${vars.iv || vars.dv ? `
+      <section class="detail-section">
+        <div class="label">🧪 变量说明</div>
+        <div class="vars-grid">
+          ${vars.iv ? `<div class="var-card"><small>自变量</small><span>${vars.iv}</span></div>` : ""}
+          ${vars.dv ? `<div class="var-card"><small>因变量</small><span>${vars.dv}</span></div>` : ""}
+          ${vars.control ? `<div class="var-card"><small>控制变量</small><span>${vars.control}</span></div>` : ""}
+        </div>
+      </section>` : ""}
+
+      <section class="detail-section">
+        <div class="label">🔬 实验过程</div>
+        ${steps.map((step, i) => `
+          <div class="step-block">
+            <h4>${step.title || "步骤 " + (i + 1)}</h4>
+            <p>${step.text}</p>
+          </div>
+        `).join("")}
+      </section>
+
+      ${figures.length ? `
+      <section class="detail-section">
+        <div class="label">📊 教材插图</div>
+        <div class="fig-grid">${figures.map(bookFigure).join("")}</div>
+      </section>` : ""}
+
+      <section class="detail-section">
+        <div class="label">✨ 主要发现</div>
+        <div class="body">${exp.resultsDetail || exp.finding}</div>
+      </section>
+
+      <section class="detail-section">
+        <div class="label">🏛 历史意义</div>
+        <div class="body">${exp.significance}</div>
+      </section>
+
+      <div class="detail-nav">
+        <button type="button" class="primary" data-back>← 返回全部</button>
+        ${idx > 0 ? `<button type="button" data-prev="${list[idx - 1].id}">← ${list[idx - 1].title}</button>` : ""}
+        ${idx < list.length - 1 ? `<button type="button" data-next="${list[idx + 1].id}">${list[idx + 1].title} →</button>` : ""}
+      </div>
+    </article>`;
+}
+
+function bindContentEvents() {
+  document.querySelectorAll(".exp-card[data-id]").forEach(card => {
+    const open = () => openDetail(card.dataset.id);
+    card.addEventListener("click", open);
+    card.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
+  });
+  document.querySelector("[data-back]")?.addEventListener("click", () => {
+    viewMode = "grid";
+    activeId = null;
+    render();
+  });
+  document.querySelector("[data-prev]")?.addEventListener("click", e => openDetail(e.target.dataset.prev));
+  document.querySelector("[data-next]")?.addEventListener("click", e => openDetail(e.target.dataset.next));
+
+  document.querySelectorAll(".zoomable-img-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const img = btn.querySelector("img");
+      openImageLightbox(img?.src || btn.dataset.zoomSrc, btn.dataset.zoomCap || img?.alt || "");
+    });
+  });
+  document.querySelectorAll(".zoomable-img").forEach(img => {
+    img.addEventListener("click", () => openImageLightbox(img.src, img.alt || ""));
+  });
+}
+
+const imgLightbox = document.getElementById("imgLightbox");
+const imgLightboxImg = document.getElementById("imgLightboxImg");
+const imgLightboxCap = document.getElementById("imgLightboxCap");
+const imgLightboxClose = document.getElementById("imgLightboxClose");
+const imgLightboxBackdrop = document.getElementById("imgLightboxBackdrop");
+
+function openImageLightbox(src, caption) {
+  if (!src || !imgLightbox) return;
+  imgLightboxImg.src = src;
+  imgLightboxImg.alt = caption || "放大图片";
+  if (caption) {
+    imgLightboxCap.textContent = caption;
+    imgLightboxCap.hidden = false;
+  } else {
+    imgLightboxCap.textContent = "";
+    imgLightboxCap.hidden = true;
+  }
+  imgLightbox.hidden = false;
+  imgLightbox.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+  imgLightboxClose?.focus();
+}
+
+function closeImageLightbox() {
+  if (!imgLightbox) return;
+  imgLightbox.hidden = true;
+  imgLightbox.setAttribute("aria-hidden", "true");
+  imgLightboxImg.removeAttribute("src");
+  document.body.style.overflow = "";
+}
+
+imgLightboxClose?.addEventListener("click", closeImageLightbox);
+imgLightboxBackdrop?.addEventListener("click", closeImageLightbox);
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && imgLightbox && !imgLightbox.hidden) closeImageLightbox();
+});
+
+function openDetail(id) {
+  const exp = EXPERIMENTS.find(x => x.id === id);
+  if (!exp || !filtered().some(x => x.id === id)) return;
+  viewMode = "detail";
+  activeId = id;
+  render();
+  document.getElementById("content").scrollTop = 0;
+}
+
+function render() {
+  const list = filtered();
+  document.getElementById("stats").textContent = `共 ${EXPERIMENTS.length} 个经典实验 · 显示 ${list.length} 个`;
+  buildSidebar();
+  const content = document.getElementById("content");
+  if (viewMode === "detail" && activeId) {
+    const exp = EXPERIMENTS.find(x => x.id === activeId);
+    if (exp && list.some(x => x.id === activeId)) {
+      content.innerHTML = renderDetail(exp);
+    } else {
+      viewMode = "grid";
+      activeId = null;
+      content.innerHTML = renderGrid(list);
+    }
+  } else {
+    viewMode = "grid";
+    activeId = null;
+    content.innerHTML = renderGrid(list);
+  }
+  bindContentEvents();
+}
+
+document.getElementById("searchInput").addEventListener("input", e => {
+  searchQuery = e.target.value.trim();
+  if (activeId && !filtered().some(x => x.id === activeId)) {
+    viewMode = "grid";
+    activeId = null;
+  }
+  render();
+});
+
+buildFilters();
+render();
+</script>
+</body>
+</html>

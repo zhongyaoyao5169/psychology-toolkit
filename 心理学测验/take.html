@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>样题试测 · 心理学测验</title>
+<style>
+:root{
+  --bg:#FAF7F0;--ink:#2B2622;--muted:#9A9388;--line:#E5DFD3;--card:#FFFFFF;
+  --chip-bg:#F1ECE1;--warn-bg:#FDF3E7;--warn-ink:#9A6520;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;
+  font-family:"Helvetica Neue","PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg);color:var(--ink);
+}
+.wrap{max-width:720px;margin:0 auto;padding:24px 20px 48px}
+.back{
+  display:inline-flex;align-items:center;gap:6px;margin-bottom:16px;
+  font-size:13px;color:var(--muted);text-decoration:none;
+}
+.back:hover{color:var(--ink)}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin-bottom:16px;
+}
+.card h1{margin:0 0 8px;font-size:20px;line-height:1.35}
+.badge{
+  display:inline-block;font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;
+  background:var(--warn-bg);color:var(--warn-ink);margin-bottom:10px;
+}
+.lead{font-size:14px;line-height:1.7;color:#4A443D;margin:0 0 12px}
+.notice{
+  font-size:12px;line-height:1.65;color:var(--warn-ink);background:var(--warn-bg);
+  border:1px solid #E8D4B0;border-radius:10px;padding:10px 12px;margin-top:10px;
+}
+.btn{
+  display:inline-block;padding:10px 18px;border-radius:8px;border:1px solid var(--ink);
+  background:var(--ink);color:#fff;font-size:14px;cursor:pointer;font-family:inherit;
+}
+.btn:hover{opacity:.92}
+.btn.secondary{background:#fff;color:var(--ink)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.progress{font-size:12px;color:var(--muted);margin-bottom:12px}
+.q-title{font-size:15px;font-weight:700;margin:0 0 14px;line-height:1.5}
+.matrix-wrap{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;margin-bottom:16px}
+.matrix-grid{
+  display:grid;grid-template-columns:repeat(3,56px);gap:6px;
+}
+.matrix-cell,.opt-cell{
+  width:56px;height:56px;border:1px solid var(--line);border-radius:8px;
+  background:#fff;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:3px;padding:4px;
+}
+.matrix-cell.empty{background:var(--chip-bg);border-style:dashed}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--ink)}
+.options-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%}
+.opt-btn{
+  border:1px solid var(--line);border-radius:10px;background:#fff;padding:10px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:6px;transition:border-color .15s,background .15s;
+}
+.opt-btn:hover{border-color:var(--ink)}
+.opt-btn.selected{border-color:var(--ink);background:var(--chip-bg)}
+.opt-label{font-size:11px;color:var(--muted);font-weight:700}
+.yesno-row{
+  display:flex;gap:10px;margin-top:8px;
+}
+.yesno-row button{
+  flex:1;padding:10px;border:1px solid var(--line);border-radius:8px;background:#fff;
+  font-size:14px;cursor:pointer;font-family:inherit;
+}
+.yesno-row button.selected{background:var(--chip-bg);border-color:var(--ink);font-weight:700}
+.statement{font-size:14px;line-height:1.65;color:#4A443D;margin:0 0 4px}
+.nav-row{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:14px 0}
+.result-card{
+  background:var(--chip-bg);border:1px solid var(--line);border-radius:10px;padding:12px;text-align:center;
+}
+.result-card strong{display:block;font-size:22px;margin:4px 0}
+.result-card small{font-size:11px;color:var(--muted);line-height:1.4}
+.rule-box{
+  font-size:13px;line-height:1.75;color:#4A443D;background:#fff;
+  border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-top:10px;
+}
+.rule-box h3{margin:0 0 6px;font-size:13px;color:var(--ink)}
+.fake-tag{
+  display:inline-block;font-size:10px;font-weight:700;color:#B84558;
+  background:#FCEEF0;padding:2px 6px;border-radius:4px;margin-left:6px;
+}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script src="sample_tests.js"></script>
+<script>
+const params = new URLSearchParams(location.search);
+const testId = params.get("id");
+const sample = SAMPLE_TESTS[testId];
+const app = document.getElementById("app");
+
+if (!sample) {
+  app.innerHTML = `<a class="back" href="index.html">← 返回心理学测验</a>
+    <div class="card"><h1>未找到样题</h1><p class="lead">请从测验详情页进入样题试测。</p></div>`;
+} else {
+  let phase = "intro";
+  let qi = 0;
+  let answers = [];
+
+  function renderCell(cell, cls) {
+    if (!cell) return `<div class="${cls} empty"></div>`;
+    let count = 1;
+    if (Array.isArray(cell)) {
+      const flat = cell.flat(2).filter(x => typeof x === "number");
+      count = flat.length ? flat.reduce((a, b) => a + b, 0) : 1;
+    }
+    count = Math.max(1, Math.min(count, 9));
+    const dots = Array.from({ length: count }, () => '<span class="dot"></span>').join("");
+    return `<div class="${cls}">${dots}</div>`;
+  }
+
+  function renderMatrix(rows) {
+    return `<div class="matrix-grid">${rows.flat().map(c => renderCell(c, "matrix-cell")).join("")}</div>`;
+  }
+
+  function renderOption(opt, idx) {
+    const label = String.fromCharCode(65 + idx);
+    const inner = renderCell(opt[0] ? opt : opt, "opt-cell");
+    return `<button type="button" class="opt-btn" data-opt="${idx}">
+      <span class="opt-label">${label}</span>${inner}
+    </button>`;
+  }
+
+  function introHtml() {
+    return `
+      <a class="back" href="index.html?id=${sample.linkedTestId}">← 返回测验详情</a>
+      <div class="card">
+        <span class="badge">${sample.badge} · ${sample.structureNote}</span>
+        <h1>${sample.title}</h1>
+        <p class="lead">${sample.intro}</p>
+        <div class="notice">⚠️ 本页为<strong>学习用样题</strong>，计分流程参照官方说明，但<strong>结果数值为演示换算，非常模、不可用于诊断</strong>。</div>
+        <div style="margin-top:16px">
+          <button type="button" class="btn" id="startBtn">开始试测</button>
+        </div>
+      </div>`;
+  }
+
+  function questionHtml() {
+    const q = sample.questions[qi];
+    const total = sample.questions.length;
+    if (sample.type === "matrix") {
+      return `
+        <a class="back" href="index.html?id=${sample.linkedTestId}">← 返回测验详情</a>
+        <div class="card">
+          <div class="progress">第 ${qi + 1} / ${total} 题</div>
+          <p class="q-title">${q.prompt}</p>
+          <div class="matrix-wrap">${renderMatrix(q.rows)}</div>
+          <p style="font-size:12px;color:var(--muted);margin:0 0 8px">请选择最合适的备择项：</p>
+          <div class="options-grid" id="optGrid">
+            ${q.options.map((o, i) => renderOption(o, i)).join("")}
+          </div>
+          <div class="nav-row">
+            ${qi > 0 ? `<button type="button" class="btn secondary" id="prevBtn">上一题</button>` : ""}
+            <button type="button" class="btn" id="nextBtn" disabled>${qi < total - 1 ? "下一题" : "查看结果"}</button>
+          </div>
+        </div>`;
+    }
+    const sel = answers[qi];
+    return `
+      <a class="back" href="index.html?id=${sample.linkedTestId}">← 返回测验详情</a>
+      <div class="card">
+        <div class="progress">第 ${qi + 1} / ${total} 题 · ${sample.scaleLabels[q.scale]}</div>
+        <p class="statement">${q.text}</p>
+        <div class="yesno-row">
+          <button type="button" class="${sel === true ? "selected" : ""}" data-yn="1">是</button>
+          <button type="button" class="${sel === false ? "selected" : ""}" data-yn="0">否</button>
+        </div>
+        <div class="nav-row">
+          ${qi > 0 ? `<button type="button" class="btn secondary" id="prevBtn">上一题</button>` : ""}
+          <button type="button" class="btn" id="nextBtn" ${sel === undefined ? "disabled" : ""}>${qi < total - 1 ? "下一题" : "查看结果"}</button>
+        </div>
+      </div>`;
+  }
+
+  function scoreRaven() {
+    let raw = 0;
+    sample.questions.forEach((q, i) => {
+      if (answers[i] === q.answer) raw++;
+    });
+    const demoIQ = Math.round(85 + raw * 5);
+    return {
+      raw,
+      total: sample.questions.length,
+      cards: [
+        { label: "原始分（答对题数）", value: raw + " / " + sample.questions.length, sub: "官方：查常模表" },
+        { label: "演示 IQ", value: demoIQ, sub: "假 · 仅供学习", fake: true },
+        { label: "百分等级（演示）", value: Math.min(99, 40 + raw * 10) + "%", sub: "假 · 非真实常模", fake: true },
+      ],
+    };
+  }
+
+  function scoreEpq() {
+    const scales = { E: 0, N: 0, P: 0, L: 0 };
+    sample.questions.forEach((q, i) => {
+      const ans = answers[i];
+      if (ans === undefined) return;
+      const hit = q.yesScores ? ans === true : ans === false;
+      if (hit) scales[q.scale]++;
+    });
+    const cards = Object.entries(scales).map(([k, raw]) => ({
+      label: sample.scaleLabels[k],
+      value: "T≈" + (50 + raw * 3),
+      sub: "原始分 " + raw + " · 演示",
+      fake: true,
+    }));
+    return { scales, cards, rawNote: "各量表原始分 = 符合记分键的「是/否」反应数" };
+  }
+
+  function resultHtml() {
+    const result = sample.type === "matrix" ? scoreRaven() : scoreEpq();
+    return `
+      <a class="back" href="index.html?id=${sample.linkedTestId}">← 返回测验详情</a>
+      <div class="card">
+        <span class="badge">${sample.badge}</span>
+        <h1>试测结果</h1>
+        <div class="notice">⚠️ 以下<strong>演示分数非常模结果</strong>，不能代替正式施测与专业解释，仅供学习记分规则与结果形式。</div>
+        <div class="result-grid">
+          ${result.cards.map(c => `
+            <div class="result-card">
+              <small>${c.label}${c.fake ? '<span class="fake-tag">演示</span>' : ""}</small>
+              <strong>${c.value}</strong>
+              <small>${c.sub || ""}</small>
+            </div>`).join("")}
+        </div>
+        ${result.rawNote ? `<p class="lead" style="font-size:13px;font-weight:400">${result.rawNote}</p>` : ""}
+        <div class="rule-box">
+          <h3>官方记分规则说明</h3>
+          <p style="margin:0">${sample.scoringRuleOfficial}</p>
+        </div>
+        <div class="rule-box">
+          <h3>样题演示说明</h3>
+          <p style="margin:0">${sample.scoringRuleDemo}</p>
+        </div>
+        <div class="nav-row" style="margin-top:16px">
+          <button type="button" class="btn secondary" id="retryBtn">重新试测</button>
+          <a class="btn" href="index.html?id=${sample.linkedTestId}" style="text-decoration:none">返回详情</a>
+        </div>
+      </div>`;
+  }
+
+  function bind() {
+    if (phase === "intro") {
+      document.getElementById("startBtn")?.addEventListener("click", () => {
+        phase = "quiz";
+        answers = sample.questions.map(() => undefined);
+        qi = 0;
+        render();
+      });
+      return;
+    }
+    if (phase === "result") {
+      document.getElementById("retryBtn")?.addEventListener("click", () => {
+        phase = "intro";
+        qi = 0;
+        answers = [];
+        render();
+      });
+      return;
+    }
+    if (sample.type === "matrix") {
+      document.querySelectorAll(".opt-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          answers[qi] = +btn.dataset.opt;
+          document.querySelectorAll(".opt-btn").forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
+          document.getElementById("nextBtn").disabled = false;
+        });
+        if (answers[qi] === +btn.dataset.opt) btn.classList.add("selected");
+      });
+    } else {
+      document.querySelectorAll("[data-yn]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          answers[qi] = btn.dataset.yn === "1";
+          render();
+        });
+      });
+    }
+    document.getElementById("prevBtn")?.addEventListener("click", () => { qi--; render(); });
+    document.getElementById("nextBtn")?.addEventListener("click", () => {
+      if (answers[qi] === undefined) return;
+      if (qi < sample.questions.length - 1) { qi++; render(); }
+      else { phase = "result"; render(); }
+    });
+  }
+
+  function render() {
+    document.title = phase === "result" ? "试测结果 · " + sample.title : sample.title;
+    if (phase === "intro") app.innerHTML = introHtml();
+    else if (phase === "result") app.innerHTML = resultHtml();
+    else app.innerHTML = questionHtml();
+    bind();
+  }
+
+  render();
+}
+</script>
+</body>
+</html>

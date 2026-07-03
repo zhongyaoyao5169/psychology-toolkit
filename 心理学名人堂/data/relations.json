@@ -1,0 +1,548 @@
+[
+  {
+    "from": "韦伯",
+    "to": "赫尔巴特",
+    "type": "inspire",
+    "label": "用实验证明赫尔巴特提出的阈限概念",
+    "source": "table"
+  },
+  {
+    "from": "费希纳",
+    "to": "韦伯",
+    "type": "inspire",
+    "label": "韦伯定律启发费希纳建立心理物理学",
+    "source": "table"
+  },
+  {
+    "from": "冯特",
+    "to": "亥姆霍兹",
+    "type": "mentor",
+    "label": "冯特曾是亥姆霍兹的助手",
+    "source": "table"
+  },
+  {
+    "from": "艾宾浩斯",
+    "to": "费希纳",
+    "type": "inspire",
+    "label": "受费希纳《心理物理学纲要》影响",
+    "source": "table"
+  },
+  {
+    "from": "艾宾浩斯",
+    "to": "冯特",
+    "type": "rupture",
+    "label": "第一个对记忆开展实验研究，反对冯特限制",
+    "source": "table"
+  },
+  {
+    "from": "缪勒",
+    "to": "艾宾浩斯",
+    "type": "inspire",
+    "label": "继承并改进艾宾浩斯的记忆研究方法",
+    "source": "table"
+  },
+  {
+    "from": "缪勒",
+    "to": "冯特",
+    "type": "rupture",
+    "label": "反对冯特「实验只能研究基本心理历程」",
+    "source": "table"
+  },
+  {
+    "from": "铁钦纳",
+    "to": "冯特",
+    "type": "mentor",
+    "label": "师从冯特，将构造主义传入美国",
+    "source": "table"
+  },
+  {
+    "from": "霍尔",
+    "to": "冯特",
+    "type": "mentor",
+    "label": "1878年获冯特授予的首位美国心理学哲学博士学位",
+    "source": "table"
+  },
+  {
+    "from": "斯皮尔曼",
+    "to": "冯特",
+    "type": "mentor",
+    "label": "在莱比锡大学随冯特学习实验心理学",
+    "source": "table"
+  },
+  {
+    "from": "艾宾浩斯",
+    "to": "冯特",
+    "type": "mentor",
+    "label": "曾赴莱比锡随冯特学习，后独立开展记忆研究",
+    "source": "table"
+  },
+  {
+    "from": "华生",
+    "to": "普莱尔",
+    "type": "rupture",
+    "label": "普莱尔反对白板说，与华生环境决定论相对",
+    "source": "table"
+  },
+  {
+    "from": "托尔曼",
+    "to": "桑代克",
+    "type": "rupture",
+    "label": "整体目的行为观 vs 盲目试误学习观",
+    "source": "table"
+  },
+  {
+    "from": "斯金纳",
+    "to": "桑代克",
+    "type": "inspire",
+    "label": "效果律启发操作性条件反射",
+    "source": "table"
+  },
+  {
+    "from": "斯金纳",
+    "to": "巴普洛夫",
+    "type": "inspire",
+    "label": "经典/操作两类条件作用对照",
+    "source": "table"
+  },
+  {
+    "from": "华生",
+    "to": "巴普洛夫",
+    "type": "inspire",
+    "label": "经典条件反射为 S-R 研究提供基础",
+    "source": "table"
+  },
+  {
+    "from": "托尔曼",
+    "to": "华生",
+    "type": "rupture",
+    "label": "提出中介变量，反对机械 S-R",
+    "source": "table"
+  },
+  {
+    "from": "班杜拉",
+    "to": "托尔曼",
+    "type": "inspire",
+    "label": "认知中介为社会学习理论铺路",
+    "source": "table"
+  },
+  {
+    "from": "班杜拉",
+    "to": "华生",
+    "type": "rupture",
+    "label": "观察学习突破纯粹 S-R 框架",
+    "source": "table"
+  },
+  {
+    "from": "安吉尔",
+    "to": "詹姆斯",
+    "type": "mentor",
+    "label": "继承詹姆斯机能主义",
+    "source": "table"
+  },
+  {
+    "from": "阿德勒",
+    "to": "佛洛伊德",
+    "type": "rupture",
+    "label": "与弗洛伊德决裂，创立个体心理学",
+    "source": "table"
+  },
+  {
+    "from": "荣格",
+    "to": "佛洛伊德",
+    "type": "rupture",
+    "label": "分道扬镳，发展分析心理学",
+    "source": "table"
+  },
+  {
+    "from": "埃里克森",
+    "to": "佛洛伊德",
+    "type": "inspire",
+    "label": "在弗洛伊德基础上发展心理社会发展理论",
+    "source": "table"
+  },
+  {
+    "from": "埃里克森",
+    "to": "安娜佛洛伊德",
+    "type": "mentor",
+    "label": "师从安娜·佛洛伊德，属新精神分析学派",
+    "source": "table"
+  },
+  {
+    "from": "安娜佛洛伊德",
+    "to": "佛洛伊德",
+    "type": "mentor",
+    "label": "弗洛伊德之女，继承并发展精神分析与儿童分析",
+    "source": "table"
+  },
+  {
+    "from": "苛勒",
+    "to": "韦特海默",
+    "type": "mentor",
+    "label": "格式塔心理学核心成员",
+    "source": "table"
+  },
+  {
+    "from": "考夫卡",
+    "to": "韦特海默",
+    "type": "mentor",
+    "label": "与韦特海默共同创立格式塔心理学",
+    "source": "table"
+  },
+  {
+    "from": "罗杰斯",
+    "to": "马斯洛",
+    "type": "inspire",
+    "label": "共同代表人本主义第三势力",
+    "source": "table"
+  },
+  {
+    "from": "推孟",
+    "to": "比内",
+    "type": "inspire",
+    "label": "修订比内-西蒙量表为斯坦福-比内量表",
+    "source": "table"
+  },
+  {
+    "from": "韦克斯勒",
+    "to": "比内",
+    "type": "inspire",
+    "label": "在比内测验基础上发展韦氏量表",
+    "source": "table"
+  },
+  {
+    "from": "皮亚杰",
+    "to": "比内",
+    "type": "inspire",
+    "label": "儿童智力研究继承比内传统",
+    "source": "table"
+  },
+  {
+    "from": "加涅",
+    "to": "桑代克",
+    "type": "inspire",
+    "label": "学习分类继承并超越行为主义",
+    "source": "table"
+  },
+  {
+    "from": "布鲁纳",
+    "to": "皮亚杰",
+    "type": "inspire",
+    "label": "认知结构学习观受皮亚杰影响",
+    "source": "table"
+  },
+  {
+    "from": "维果茨基",
+    "to": "皮亚杰",
+    "type": "rupture",
+    "label": "社会文化理论 vs 个体建构观",
+    "source": "table"
+  },
+  {
+    "from": "科尔伯格",
+    "to": "皮亚杰",
+    "type": "inspire",
+    "label": "道德发展阶段论受皮亚杰启发",
+    "source": "table"
+  },
+  {
+    "from": "费斯汀格",
+    "to": "阿希",
+    "type": "inspire",
+    "label": "认知失调与从众实验同属社会认知",
+    "source": "table"
+  },
+  {
+    "from": "米尔格拉姆",
+    "to": "阿希",
+    "type": "inspire",
+    "label": "服从实验延伸从众研究",
+    "source": "table"
+  },
+  {
+    "from": "津巴多",
+    "to": "米尔格拉姆",
+    "type": "inspire",
+    "label": "斯坦福监狱实验与服从研究一脉相承",
+    "source": "table"
+  },
+  {
+    "from": "梅奥（梅约）",
+    "to": "泰勒",
+    "type": "rupture",
+    "label": "霍桑实验挑战泰勒科学管理",
+    "source": "table"
+  },
+  {
+    "from": "赫茨伯格",
+    "to": "梅奥（梅约）",
+    "type": "inspire",
+    "label": "双因素理论受霍桑实验影响",
+    "source": "table"
+  },
+  {
+    "from": "勒温",
+    "to": "费斯汀格",
+    "type": "inspire",
+    "label": "场论影响社会心理学",
+    "source": "table"
+  },
+  {
+    "from": "闵斯特伯格",
+    "to": "冯特",
+    "type": "mentor",
+    "label": "师从冯特，开创工业心理学",
+    "source": "table"
+  },
+  {
+    "from": "塞利格曼",
+    "to": "斯金纳",
+    "type": "rupture",
+    "label": "从行为主义转向积极心理学",
+    "source": "table"
+  },
+  {
+    "from": "廷伯根",
+    "to": "劳伦兹",
+    "type": "inspire",
+    "label": "与劳伦兹共同创立现代习性学",
+    "source": "table"
+  },
+  {
+    "from": "赫布",
+    "to": "亥姆霍兹",
+    "type": "inspire",
+    "label": "继承神经生理与心理行为联结的传统",
+    "source": "table"
+  },
+  {
+    "from": "赫尔巴特",
+    "to": "裴斯泰洛齐",
+    "type": "inspire",
+    "label": "裴斯泰洛齐教育心理学化思想影响赫尔巴特",
+    "source": "table"
+  },
+  {
+    "from": "皮尔逊",
+    "to": "高尔顿",
+    "type": "inspire",
+    "label": "继承高尔顿生物计量学，发展相关与分布理论",
+    "source": "table"
+  },
+  {
+    "from": "斯皮尔曼",
+    "to": "皮尔逊",
+    "type": "inspire",
+    "label": "在皮尔逊积差相关基础上发展等级相关",
+    "source": "table"
+  },
+  {
+    "from": "戈塞特",
+    "to": "皮尔逊",
+    "type": "mentor",
+    "label": "在皮尔逊指导下完成小样本 t 检验",
+    "source": "table"
+  },
+  {
+    "from": "费舍",
+    "to": "皮尔逊",
+    "type": "inspire",
+    "label": "继承相关分析传统并发展 ANOVA 与实验设计",
+    "source": "table"
+  },
+  {
+    "from": "费舍",
+    "to": "戈塞特",
+    "type": "inspire",
+    "label": "t 检验思想影响其推断统计体系",
+    "source": "table"
+  },
+  {
+    "from": "小皮尔逊",
+    "to": "皮尔逊",
+    "type": "mentor",
+    "label": "师从父亲，共同主持生物计量学工作",
+    "source": "table"
+  },
+  {
+    "from": "内曼",
+    "to": "小皮尔逊",
+    "type": "inspire",
+    "label": "合作建立奈曼-皮尔逊假设检验理论",
+    "source": "table"
+  },
+  {
+    "from": "达克沃斯",
+    "to": "塞利格曼",
+    "type": "mentor",
+    "label": "在宾大师从塞利格曼，发展坚毅研究",
+    "source": "table"
+  },
+  {
+    "from": "彭凯平",
+    "to": "塞利格曼",
+    "type": "inspire",
+    "label": "留美期间受积极心理学运动影响",
+    "source": "table"
+  },
+  {
+    "from": "吉尔伯特",
+    "to": "卡尼曼",
+    "type": "inspire",
+    "label": "情感预测研究延续行为决策传统",
+    "source": "table"
+  },
+  {
+    "from": "巴雷特",
+    "to": "卡尼曼",
+    "type": "inspire",
+    "label": "情绪建构吸收认知与决策科学视角",
+    "source": "table"
+  },
+  {
+    "from": "海特",
+    "to": "费斯汀格",
+    "type": "inspire",
+    "label": "社会认知与认知失调传统下的道德心理研究",
+    "source": "table"
+  },
+  {
+    "from": "洛夫特斯",
+    "to": "奈塞尔",
+    "type": "inspire",
+    "label": "在认知心理学框架下研究记忆重构",
+    "source": "table"
+  },
+  {
+    "from": "戴维森",
+    "to": "斯佩里",
+    "type": "inspire",
+    "label": "从脑半球研究走向情感神经科学",
+    "source": "table"
+  },
+  {
+    "from": "平克",
+    "to": "乔姆斯基",
+    "type": "inspire",
+    "label": "语言本能论继承普遍语法传统",
+    "source": "table"
+  },
+  {
+    "from": "麦基恩卡特尔",
+    "to": "冯特",
+    "type": "mentor",
+    "label": "在莱比锡任冯特助理并完成博士论文",
+    "source": "table"
+  },
+  {
+    "from": "詹姆斯",
+    "to": "亥姆霍兹",
+    "type": "inspire",
+    "label": "赴德留学期间受亥姆霍兹生理心理学影响",
+    "source": "table"
+  },
+  {
+    "from": "詹姆斯",
+    "to": "冯特",
+    "type": "inspire",
+    "label": "同受亥姆霍兹影响，机能主义与实验心理学并起",
+    "source": "table"
+  },
+  {
+    "from": "霍尔",
+    "to": "詹姆斯",
+    "type": "mentor",
+    "label": "返美后于哈佛随詹姆斯继续心理学研究",
+    "source": "table"
+  },
+  {
+    "from": "波林",
+    "to": "铁钦纳",
+    "type": "mentor",
+    "label": "在康奈尔大学随铁钦纳接受构造主义训练",
+    "source": "table"
+  },
+  {
+    "from": "斯金纳",
+    "to": "波林",
+    "type": "inspire",
+    "label": "哈佛心理系学术环境中延续行为主义传统",
+    "source": "table"
+  },
+  {
+    "from": "桑代克",
+    "to": "詹姆斯",
+    "type": "inspire",
+    "label": "哈佛求学期间受詹姆斯机能主义影响",
+    "source": "table"
+  },
+  {
+    "from": "伍德沃斯",
+    "to": "詹姆斯",
+    "type": "inspire",
+    "label": "机能主义心理学传统下的代表学者",
+    "source": "table"
+  },
+  {
+    "from": "马斯洛",
+    "to": "桑代克",
+    "type": "mentor",
+    "label": "在哥伦比亚大学师从桑代克完成博士训练",
+    "source": "table"
+  },
+  {
+    "from": "杜威",
+    "to": "霍尔",
+    "type": "mentor",
+    "label": "在霍普金斯大学随霍尔攻读哲学博士",
+    "source": "table"
+  },
+  {
+    "from": "推孟",
+    "to": "霍尔",
+    "type": "mentor",
+    "label": "在克拉克大学随霍尔学习",
+    "source": "table"
+  },
+  {
+    "from": "格赛尔",
+    "to": "霍尔",
+    "type": "mentor",
+    "label": "在克拉克大学随霍尔学习发展心理学",
+    "source": "table"
+  },
+  {
+    "from": "华生",
+    "to": "杜威",
+    "type": "inspire",
+    "label": "在芝加哥大学受杜威进步主义教育思想影响",
+    "source": "table"
+  },
+  {
+    "from": "拉什利",
+    "to": "华生",
+    "type": "mentor",
+    "label": "在约翰·霍普金斯大学随华生从事动物行为研究",
+    "source": "table"
+  },
+  {
+    "from": "克伯屈",
+    "to": "杜威",
+    "type": "mentor",
+    "label": "哥伦比亚大学师范学院随杜威学习设计教学法",
+    "source": "table"
+  },
+  {
+    "from": "胡适",
+    "to": "杜威",
+    "type": "inspire",
+    "label": "留学哥伦比亚大学期间受杜威实用主义极大影响",
+    "source": "table"
+  },
+  {
+    "from": "陶行知",
+    "to": "杜威",
+    "type": "mentor",
+    "label": "在哥伦比亚大学师范学院师从杜威，回国创办生活教育",
+    "source": "table"
+  }
+]

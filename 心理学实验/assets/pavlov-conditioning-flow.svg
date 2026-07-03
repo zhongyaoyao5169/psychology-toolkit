@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" width="600" height="300">
+
+<style>
+  .bg { fill: #FAF7F0; }
+  .frame { fill: #FFFFFF; stroke: #E5DFD3; stroke-width: 2; }
+  .ink { fill: #2B2622; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+  .muted { fill: #9A9388; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+  .accent { fill: #7C7AE0; }
+  .accent2 { fill: #3AA984; }
+  .accent3 { fill: #E2566B; }
+  .line { stroke: #2B2622; stroke-width: 2; fill: none; }
+  .dash { stroke: #9A9388; stroke-width: 1.5; fill: none; stroke-dasharray: 6 4; }
+</style>
+
+<rect class="bg" width="600" height="300"/>
+<rect class="frame" x="40" y="40" width="520" height="230" rx="10"/>
+<text class="muted" x="130" y="90" font-size="12" text-anchor="middle">配对前</text>
+<text class="ink" x="130" y="120" font-size="12" text-anchor="middle">铃声 → 无唾液</text>
+<text class="ink" x="130" y="150" font-size="12" text-anchor="middle">食物 → 分泌</text>
+<text class="muted" x="370" y="90" font-size="12" text-anchor="middle">配对后</text>
+<text class="ink" x="370" y="130" font-size="12" text-anchor="middle">铃声 alone</text>
+<text class="accent3" x="370" y="160" font-size="13" text-anchor="middle">→ 分泌唾液 CR</text>
+<text class="muted" x="300" y="210" font-size="13" text-anchor="middle">CS + US 反复结合 → 条件反应建立</text>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" width="600" height="300">
+
+<style>
+  .bg { fill: #FAF7F0; }
+  .frame { fill: #FFFFFF; stroke: #E5DFD3; stroke-width: 2; }
+  .ink { fill: #2B2622; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+  .muted { fill: #9A9388; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; }
+  .accent { fill: #7C7AE0; }
+  .accent2 { fill: #3AA984; }
+  .accent3 { fill: #E2566B; }
+  .line { stroke: #2B2622; stroke-width: 2; fill: none; }
+  .dash { stroke: #9A9388; stroke-width: 1.5; fill: none; stroke-dasharray: 6 4; }
+</style>
+
+<rect class="bg" width="600" height="300"/>
+<rect class="frame" x="40" y="35" width="520" height="250" rx="10"/>
+<text class="ink" x="300" y="65" font-size="16" text-anchor="middle">艾宾浩斯记忆实验</text>
+<rect class="frame" x="70" y="95" width="460" height="60" rx="10"/>
+<text class="ink" x="300" y="125" font-size="14" text-anchor="middle">DAX · BOK · YAT · LEF · …（无意义音节表）</text>
+<text class="muted" x="300" y="175" font-size="13" text-anchor="middle">控制：学习遍数固定 · 朗读合节拍</text>
+<text class="muted" x="300" y="215" font-size="13" text-anchor="middle">间隔：20 分 · 1 小时 · 1 天 · … · 31 天</text>
+</svg>

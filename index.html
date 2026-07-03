@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>心理学工具集</title>
+<style>
+:root{
+  --bg:#FAF7F0;--ink:#2B2622;--muted:#9A9388;--line:#E5DFD3;--card:#FFFFFF;
+  --accent-mentor:#7C7AE0;--accent-rupture:#E2566B;--accent-inspire:#3AA984;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;
+  font-family:"Helvetica Neue","PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg);color:var(--ink);
+}
+.header{
+  padding:28px 40px 20px;border-bottom:1px solid var(--line);
+  background:var(--bg);
+}
+.header-top{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:24px;width:100%;
+}
+.header h1{margin:0;font-size:24px;line-height:1.35}
+.header-desc{
+  margin:8px 0 0;font-size:14px;color:var(--muted);line-height:1.65;max-width:720px;
+}
+.visit-stat{
+  flex-shrink:0;margin:0;font-size:14px;line-height:1.65;color:var(--muted);white-space:nowrap;
+}
+.main{max-width:920px;margin:0 auto;padding:28px 32px 88px}
+@media(max-width:900px){
+  .header{padding:24px max(24px,8vw) 18px}
+  .site-footer{padding:0 max(24px,8vw) 16px}
+}
+.tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.tool{
+  display:flex;flex-direction:column;gap:10px;
+  padding:18px 20px;background:var(--card);border:1px solid var(--line);
+  border-radius:14px;text-decoration:none;color:inherit;
+  transition:box-shadow .15s,border-color .15s,transform .15s;
+}
+.tool:hover{
+  border-color:var(--ink);box-shadow:0 6px 20px rgba(0,0,0,.06);transform:translateY(-1px);
+}
+.tool-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.tool h2{margin:0;font-size:17px;line-height:1.35}
+.tool-tag{
+  flex-shrink:0;font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;
+  background:#F1ECE1;color:#6B6358;white-space:nowrap;
+}
+.tool p{margin:0;font-size:13px;color:var(--muted);line-height:1.6}
+.tool-meta{font-size:12px;color:var(--muted);margin-top:auto;padding-top:4px}
+.tool-meta code{
+  font-size:11px;background:#F1ECE1;padding:2px 6px;border-radius:4px;color:var(--ink);
+}
+.site-footer{
+  position:fixed;left:0;right:0;bottom:0;z-index:10;
+  padding:0 40px 18px;background:var(--bg);
+}
+.site-footer-line{border:0;border-top:1px solid var(--line);margin:0}
+.site-footer-info{margin:14px 0 0;text-align:right}
+.site-footer-link{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:14px;line-height:1;color:#5C5650;text-decoration:none;
+}
+.site-footer-link:hover{color:var(--ink)}
+.site-footer-link svg{width:18px;height:18px;flex-shrink:0}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-top">
+    <h1>心理学工具集</h1>
+    <p class="visit-stat" id="visitStat">累计访问：—</p>
+  </div>
+  <p class="header-desc">课程配套的可视化与小工具，统一收纳在此。点击卡片打开对应页面。</p>
+</div>
+<main class="main">
+  <div class="tools">
+    <a class="tool" href="心理学名人堂/lineage_v2_1.html">
+      <div class="tool-head">
+        <h2>心理学名人堂</h2>
+        <span class="tool-tag">人物脉络</span>
+      </div>
+      <p>纵轴为年代、横轴为学派与研究方向，点击学者卡片可高亮师承、启发与决裂关系。</p>
+      <div class="tool-meta">直接打开 HTML 即可使用</div>
+    </a>
+    <a class="tool" href="心理学统计数理/web/index.html">
+      <div class="tool-head">
+        <h2>心理学统计数理</h2>
+        <span class="tool-tag">统计数理</span>
+      </div>
+      <p>收录数据计算与统计可视化工具。当前含线性变换对方差、标准差、均值影响的交互演示，含 Plotly 图表与 GIF 动画。</p>
+      <div class="tool-meta">含 GIF 时请在 <code>心理学统计数理</code> 目录运行 <code>python3 serve_web.py</code></div>
+    </a>
+    <a class="tool" href="心理学实验/index.html">
+      <div class="tool-head">
+        <h2>心理学实验</h2>
+        <span class="tool-tag">经典实验</span>
+      </div>
+      <p>依据郭秀艳《实验心理学》梳理经典研究，图文详解实验过程，支持目录切换与搜索。</p>
+      <div class="tool-meta">直接打开 HTML 即可使用</div>
+    </a>
+    <a class="tool" href="心理学测验/index.html">
+      <div class="tool-head">
+        <h2>心理学测验</h2>
+        <span class="tool-tag">临床测验</span>
+      </div>
+      <p>临床心理学常用智力与人格评估量表：韦氏、比奈、瑞文、MMPI、EPQ、16PF、投射测验等，结构与「心理学实验」一致。</p>
+      <div class="tool-meta">直接打开 HTML 即可使用</div>
+    </a>
+  </div>
+</main>
+<footer class="site-footer">
+  <hr class="site-footer-line">
+  <p class="site-footer-info">
+    <a class="site-footer-link" href="https://github.com/zhongyaoyao5169" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span>zhongyaoyao5169</span>
+    </a>
+  </p>
+</footer>
+<script>
+(function () {
+  const KEY = "psych-toolkit-visit-count";
+  let count = parseInt(localStorage.getItem(KEY) || "0", 10);
+  if (!Number.isFinite(count) || count < 0) count = 0;
+  count += 1;
+  localStorage.setItem(KEY, String(count));
+  const el = document.getElementById("visitStat");
+  if (el) el.textContent = "累计访问：" + count.toLocaleString("zh-CN");
+})();
+</script>
+</body>
+</html>
