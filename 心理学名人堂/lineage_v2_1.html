@@ -373,6 +373,7 @@ function syncBoardChrome(){
 
 function applyCanvasZoom(){
   const board = document.getElementById('board');
+  const boardFrame = document.getElementById('boardFrame');
   if(!board || !boardScaler || !boardCardsLayer) return;
   const baseW = parseFloat(boardScaler.dataset.baseW) || board.offsetWidth;
   const baseH = parseFloat(boardScaler.dataset.baseH) || board.offsetHeight;
@@ -382,6 +383,13 @@ function applyCanvasZoom(){
   boardScaler.style.transform = 'none';
   boardScaler.style.width = Math.ceil(baseW * canvasZoom) + 'px';
   boardScaler.style.height = Math.ceil(baseH * canvasZoom) + 'px';
+  const timelineW = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--timeline-w')) || 160;
+  const scaledTimelineW = Math.ceil(timelineW * canvasZoom);
+  if(boardFrame){
+    boardFrame.style.gridTemplateColumns = canvasZoom === 1
+      ? ''
+      : `${scaledTimelineW}px minmax(0, 1fr)`;
+  }
   if(zoomSlider) zoomSlider.value = Math.round(canvasZoom * 100);
   if(zoomLabel) zoomLabel.textContent = Math.round(canvasZoom * 100) + '%';
   if(zoomOutBtn) zoomOutBtn.disabled = canvasZoom <= 0.505;
