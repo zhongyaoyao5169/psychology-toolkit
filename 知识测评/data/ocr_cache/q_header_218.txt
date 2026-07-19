@@ -1,0 +1,13 @@
+bilin. wendu. com                                                                                         第六编 心理与教育统计学
+
+Da. py wa we 的两两组合中至少有一对相等
+3.方差分析利用了方差的哪一个特性(    )
+
+A. 离散性                                               B. 灵敏性
+
+C. 可加性                                    D. 适合进一步代数运算
+4. 在方差分析中 LIF (MS) 的计算方法是(      )
+
+A.组间平方和/组内平方和             B. 平方和/自由度
+
+an ae fan a aos panes ie ks            cm. de che phen

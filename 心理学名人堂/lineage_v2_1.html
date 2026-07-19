@@ -397,6 +397,7 @@ function applyCanvasZoom(){
   syncBoardChrome();
   updateViewportScrollbars();
   buildConnections();
+  updateDetailPopBounds();
 }
 
 function setCanvasZoom(percent){
@@ -422,13 +423,17 @@ function updateHeaderHeight(){
 function updateDetailPopBounds(){
   const zoom = document.getElementById('zoomControl');
   const stage = document.getElementById('canvasStage');
+  const headerWrap = document.getElementById('colsHeaderWrap');
   if(!zoom || !stage) return;
   const zr = zoom.getBoundingClientRect();
   const sr = stage.getBoundingClientRect();
+  const hr = headerWrap ? headerWrap.getBoundingClientRect() : null;
   const bottomGap = Math.max(12, window.innerHeight - sr.bottom + 12);
   document.documentElement.style.setProperty('--detail-bottom', bottomGap + 'px');
   document.documentElement.style.setProperty('--detail-right', '8px');
-  document.documentElement.style.setProperty('--detail-top-min', (zr.bottom + 8) + 'px');
+  const schoolBottom = hr && hr.height > 0 ? hr.bottom : 0;
+  const topMin = Math.max(zr.bottom, schoolBottom) + 8;
+  document.documentElement.style.setProperty('--detail-top-min', topMin + 'px');
 }
 
 const boardViewport = document.getElementById('boardViewport');
@@ -793,6 +798,7 @@ function refreshHighlights(){
 }
 
 function showDetailPop(){
+  updateDetailPopBounds();
   const pop = document.getElementById('detailPop');
   pop.classList.add('show');
   requestAnimationFrame(()=>{

@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>知识测评</title>
+<style>
+:root{
+  --bg:#FAF7F0;--ink:#2B2622;--muted:#9A9388;--line:#E5DFD3;--card:#FFFFFF;
+  --chip-bg:#F1ECE1;--accent:#3AA984;--accent-soft:#E8F5F0;
+  --wrong:#E2566B;--wrong-soft:#FCEEF0;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;
+  font-family:"Helvetica Neue","PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg);color:var(--ink);
+}
+.header{
+  padding:20px 28px 14px;border-bottom:1px solid var(--line);background:var(--bg);
+}
+.header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.header h1{margin:0;font-size:21px}
+.header p{margin:6px 0 0;font-size:13px;color:var(--muted);line-height:1.65;max-width:720px}
+.back-link{flex-shrink:0;font-size:13px;color:var(--muted);text-decoration:none;padding-top:4px}
+.back-link:hover{color:var(--ink)}
+.main{max-width:960px;margin:0 auto;padding:24px 28px 64px}
+.section{margin-bottom:32px}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}
+.section-head h2{margin:0;font-size:16px}
+.section-head span{font-size:12px;color:var(--muted)}
+.exam-list{display:flex;flex-direction:column;gap:10px}
+.exam-card{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:16px 18px;background:var(--card);border:1px solid var(--line);
+  border-radius:12px;transition:border-color .15s,box-shadow .15s;
+}
+.exam-card:hover{border-color:var(--ink);box-shadow:0 4px 14px rgba(0,0,0,.05)}
+.exam-info h3{margin:0 0 4px;font-size:15px;line-height:1.4}
+.exam-info p{margin:0;font-size:12px;color:var(--muted)}
+.exam-actions{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;
+  font-family:inherit;text-decoration:none;cursor:pointer;border:none;
+  transition:background .15s,color .15s;
+}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#329A76}
+.btn-ghost{background:transparent;color:var(--muted);padding:4px 8px;font-size:12px;font-weight:500}
+.btn-ghost:hover{color:var(--ink)}
+.empty{
+  padding:28px 20px;text-align:center;background:var(--card);
+  border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:13px;
+}
+.subject-group{margin-bottom:22px}
+.subject-head{
+  display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+  margin:0 0 12px;padding:0 2px;
+}
+.subject-head h3{margin:0;font-size:15px;font-weight:700}
+.subject-head span{font-size:12px;color:var(--muted)}
+.chapter-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:10px;
+}
+.chapter-card{
+  display:flex;flex-direction:column;justify-content:space-between;gap:12px;
+  min-height:108px;padding:14px 14px 12px;background:var(--card);
+  border:1px solid var(--line);border-radius:12px;text-decoration:none;color:inherit;
+  transition:border-color .15s,box-shadow .15s,transform .15s;
+}
+.chapter-card:hover{border-color:var(--ink);box-shadow:0 4px 14px rgba(0,0,0,.05);transform:translateY(-1px)}
+.chapter-info h4{margin:0 0 6px;font-size:13px;line-height:1.45;font-weight:600}
+.chapter-info p{margin:0;font-size:11px;color:var(--muted)}
+.chapter-card .btn{width:100%;padding:7px 12px;font-size:12px}
+.history-block{margin-top:8px}
+.history-item{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:12px 14px;background:var(--card);border:1px solid var(--line);
+  border-radius:10px;margin-bottom:8px;font-size:13px;
+  text-decoration:none;color:inherit;
+  transition:border-color .15s,box-shadow .15s,transform .15s;
+}
+.history-item:hover{border-color:var(--ink);box-shadow:0 4px 14px rgba(0,0,0,.05);transform:translateY(-1px)}
+.history-item .meta{color:var(--muted);font-size:12px;margin-top:2px}
+.history-item-hint{font-size:11px;color:var(--muted);margin-top:4px}
+.history-score{font-weight:700;font-size:14px;white-space:nowrap}
+.history-score-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:2px}
+.history-view{color:var(--muted);font-size:12px;font-weight:400}
+.history-score.good{color:var(--accent)}
+.history-score.mid{color:#C98A2E}
+.history-score.low{color:var(--wrong)}
+.history-empty{font-size:13px;color:var(--muted);padding:8px 0}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-top">
+    <div>
+      <h1>知识测评</h1>
+      <p>随堂小测与周测练习：一题一页，自动计时，至少答一题即可提交，查看已答/未答、正确率与用时分析。</p>
+    </div>
+    <a class="back-link" href="../index.html">← 返回工具集</a>
+  </div>
+</div>
+<main class="main">
+  <section class="section">
+    <div class="section-head">
+      <h2>随堂小测</h2>
+      <span id="classroomCount">—</span>
+    </div>
+    <div id="classroomBlock"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>周测</h2>
+      <span id="weeklyCount">—</span>
+    </div>
+    <div class="exam-list" id="weeklyList"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>答题记录</h2>
+      <button type="button" class="btn btn-ghost" id="clearHistory" hidden>清空记录</button>
+    </div>
+    <div class="history-block" id="historyBlock">
+      <p class="history-empty">暂无记录，完成一次测评后将显示在这里。</p>
+    </div>
+  </section>
+</main>
+<script src="data/weekly.js"></script>
+<script src="data/classroom.js"></script>
+<script>
+(function () {
+  const HISTORY_KEY = "psych-assessment-history";
+  const weeklyExams = window.WEEKLY_EXAMS || [];
+  const classroomExams = window.CLASSROOM_EXAMS || [];
+  const allExams = weeklyExams.concat(classroomExams);
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  document.getElementById("weeklyCount").textContent = weeklyExams.length + " 套试卷";
+  document.getElementById("classroomCount").textContent = classroomExams.length + " 个章节";
+
+  const classroomBlock = document.getElementById("classroomBlock");
+  if (!classroomExams.length) {
+    classroomBlock.innerHTML = '<div class="empty">暂无随堂小测。请在 <code>知识测评</code> 目录运行 <code>python3 parse_classroom.py</code> 从 PDF 生成。</div>';
+  } else {
+    const order = ["普通心理学", "发展心理学", "实验心理学", "心理与教育统计学", "心理与教育测验学"];
+    const grouped = {};
+    classroomExams.forEach(function (exam) {
+      const subject = exam.subject || "其他";
+      if (!grouped[subject]) grouped[subject] = [];
+      grouped[subject].push(exam);
+    });
+    const subjects = order.filter(function (s) { return grouped[s]; }).concat(
+      Object.keys(grouped).filter(function (s) { return order.indexOf(s) < 0; })
+    );
+    classroomBlock.innerHTML = subjects.map(function (subject) {
+      const chapters = grouped[subject].slice().sort(function (a, b) {
+        return (a.chapterOrder || 0) - (b.chapterOrder || 0);
+      });
+      return (
+        '<div class="subject-group">' +
+        '<div class="subject-head"><h3>' + escapeHtml(subject) + '</h3>' +
+        '<span>' + chapters.length + " 章</span></div>" +
+        '<div class="chapter-grid">' +
+        chapters.map(function (exam) {
+          return (
+            '<a class="chapter-card" href="quiz.html?id=' + encodeURIComponent(exam.id) + '">' +
+            '<div class="chapter-info">' +
+            '<h4>' + escapeHtml(exam.chapter || exam.title) + "</h4>" +
+            '<p>' + escapeHtml(exam.subtitle || exam.questionCount + " 题") + "</p></div>" +
+            '<span class="btn btn-primary">开始答题</span></a>'
+          );
+        }).join("") +
+        "</div></div>"
+      );
+    }).join("");
+  }
+
+  const listEl = document.getElementById("weeklyList");
+  if (!weeklyExams.length) {
+    listEl.innerHTML = '<div class="empty">试卷数据未加载，请确认 <code>data/weekly.js</code> 存在，或在项目目录运行 <code>python3 parse_exams.py</code> 重新生成。</div>';
+  } else {
+    weeklyExams.forEach(function (exam) {
+    const card = document.createElement("div");
+    card.className = "exam-card";
+    card.innerHTML =
+      '<div class="exam-info">' +
+      '<h3>' + escapeHtml(exam.title) + "</h3>" +
+      '<p>' + escapeHtml(exam.subtitle || exam.questionCount + " 题") + "</p>" +
+      "</div>" +
+      '<div class="exam-actions">' +
+      '<a class="btn btn-primary" href="quiz.html?id=' + encodeURIComponent(exam.id) + '">开始答题</a>' +
+      "</div>";
+    listEl.appendChild(card);
+    });
+  }
+
+  function loadHistory() {
+    try {
+      return JSON.parse(localStorage.getItem(HISTORY_KEY) || "{}");
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function formatTime(ts) {
+    const d = new Date(ts);
+    const pad = function (n) { return String(n).padStart(2, "0"); };
+    return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()) +
+      " " + pad(d.getHours()) + ":" + pad(d.getMinutes());
+  }
+
+  function examTitle(id) {
+    const found = allExams.find(function (e) { return e.id === id; });
+    return found ? found.title : id;
+  }
+
+  function renderHistory() {
+    const history = loadHistory();
+    const entries = [];
+    Object.keys(history).forEach(function (examId) {
+      (history[examId] || []).forEach(function (rec) {
+        entries.push({ examId: examId, rec: rec });
+      });
+    });
+    entries.sort(function (a, b) { return b.rec.timestamp - a.rec.timestamp; });
+
+    const block = document.getElementById("historyBlock");
+    const clearBtn = document.getElementById("clearHistory");
+    if (!entries.length) {
+      block.innerHTML = '<p class="history-empty">暂无记录，完成一次测评后将显示在这里。</p>';
+      clearBtn.hidden = true;
+      return;
+    }
+    clearBtn.hidden = false;
+    block.innerHTML = entries.slice(0, 30).map(function (item) {
+      const rec = item.rec;
+      const answered = rec.answered != null ? rec.answered : (rec.correct + rec.wrong);
+      const unanswered = rec.unanswered != null ? rec.unanswered : (rec.total - answered);
+      const pct = rec.accuracy != null
+        ? rec.accuracy
+        : (answered ? Math.round((rec.correct / answered) * 100) : 0);
+      const cls = pct >= 80 ? "good" : pct >= 60 ? "mid" : "low";
+      const href = "history.html?exam=" + encodeURIComponent(item.examId) +
+        "&record=" + encodeURIComponent(rec.id || rec.timestamp);
+      return (
+        '<a class="history-item" href="' + href + '">' +
+        '<div><strong>' + escapeHtml(examTitle(item.examId)) + "</strong>" +
+        '<div class="meta">' + formatTime(rec.timestamp) + " · 已答 " + answered +
+        " · 未答 " + unanswered + "</div>" +
+        '<div class="history-item-hint">点击查看答题快照与用时分析</div></div>' +
+        '<div class="history-score-wrap">' +
+        '<span class="history-score ' + cls + '">' + pct + "%</span>" +
+        '<span class="history-view">查看详情 →</span></div></a>'
+      );
+    }).join("");
+  }
+
+  document.getElementById("clearHistory").addEventListener("click", function () {
+    if (confirm("确定清空所有答题记录？")) {
+      localStorage.removeItem(HISTORY_KEY);
+      renderHistory();
+    }
+  });
+
+  renderHistory();
+})();
+</script>
+</body>
+</html>
