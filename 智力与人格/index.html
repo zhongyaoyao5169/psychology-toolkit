@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>智力与人格 · 对比表格</title>
+<style>
+:root{
+  --bg:#FAF7F0;--ink:#2B2622;--muted:#9A9388;--line:#E5DFD3;--card:#FFFFFF;
+  --chip-bg:#F1ECE1;--accent-intel:#2E6FA8;--accent-person:#7A5098;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;min-height:100vh;
+  font-family:"Helvetica Neue","PingFang SC","Microsoft YaHei",sans-serif;
+  background:var(--bg);color:var(--ink);
+  display:flex;flex-direction:column;
+}
+.header{
+  padding:20px 28px 14px;border-bottom:1px solid var(--line);
+  background:var(--bg);flex-shrink:0;
+}
+.header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.header h1{margin:0;font-size:21px}
+.header p{margin:6px 0 0;font-size:13px;color:var(--muted);line-height:1.65;max-width:920px}
+.back-link{flex-shrink:0;font-size:13px;color:var(--muted);text-decoration:none;padding-top:4px}
+.back-link:hover{color:var(--ink)}
+.sheet-tabs{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.sheet-tab{
+  padding:8px 18px;border-radius:999px;border:1px solid var(--line);
+  background:#fff;font-size:13px;font-weight:600;cursor:pointer;
+  font-family:inherit;color:var(--ink);transition:all .15s;
+}
+.sheet-tab:hover{border-color:var(--ink)}
+.sheet-tab.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.sheet-tab[data-sheet="intelligence"].active{background:var(--accent-intel);border-color:var(--accent-intel)}
+.sheet-tab[data-sheet="personality"].active{background:var(--accent-person);border-color:var(--accent-person)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px;padding-bottom:4px}
+.search-wrap{position:relative;flex:1;min-width:180px;max-width:280px}
+.search-wrap input{
+  width:100%;padding:7px 12px 7px 32px;border:1px solid var(--line);border-radius:8px;
+  background:#fff;font-size:13px;outline:none;
+}
+.search-wrap input:focus{border-color:var(--ink)}
+.search-wrap::before{content:"🔍";position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;opacity:.5}
+.hint{font-size:12px;color:var(--muted)}
+.main{flex:1;min-height:0;padding:16px 20px 48px;overflow:hidden;display:flex;flex-direction:column}
+.sheet-panel{display:none;flex:1;min-height:0;flex-direction:column}
+.sheet-panel.active{display:flex}
+.sheet-head{margin-bottom:10px}
+.sheet-head h2{margin:0 0 4px;font-size:16px}
+.sheet-head p{margin:0;font-size:12px;color:var(--muted);line-height:1.55}
+.table-scroll{
+  flex:1;min-height:0;overflow:auto;
+  border:1px solid var(--line);border-radius:14px;background:#fff;
+  scrollbar-width:thin;scrollbar-color:rgba(107,99,88,.45) transparent;
+}
+.compare-table{
+  border-collapse:separate;border-spacing:0;
+  font-size:12.5px;line-height:1.5;min-width:max-content;
+}
+.compare-table th,.compare-table td{
+  border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:10px 12px;text-align:left;vertical-align:top;
+  min-width:200px;max-width:320px;color:#4A443D;
+}
+.compare-table thead th{
+  position:sticky;top:0;z-index:4;
+  background:var(--chip-bg);font-weight:700;font-size:13px;color:var(--ink);
+  border-bottom:2px solid var(--line);
+}
+.compare-table tbody td{
+  position:relative;z-index:0;
+  background:#fff;
+}
+.compare-table tbody th.row-label{
+  position:sticky;left:0;z-index:5;
+  background:#F8F4EC;font-weight:700;font-size:12px;color:var(--ink);
+  min-width:88px;max-width:88px;width:88px;
+  border-right:2px solid var(--line);
+  box-shadow:2px 0 6px rgba(43,38,34,.08);
+}
+.compare-table thead th.corner{
+  position:sticky;left:0;top:0;z-index:6;
+  background:#EDE7DA;min-width:88px;max-width:88px;width:88px;
+  border-right:2px solid var(--line);
+  box-shadow:2px 0 6px rgba(43,38,34,.08);
+}
+.compare-table tbody tr:nth-child(even) td{background:#FDFCF9}
+.compare-table tbody tr:nth-child(even) th.row-label{background:#F3EDE3}
+.compare-table td mark{background:#FFF3C4;padding:0 2px;border-radius:2px}
+.compare-table td.cell-content{
+  padding:8px 10px;
+  overflow:hidden;
+  contain:paint;
+}
+.cell-sections{display:flex;flex-direction:column;gap:10px;max-width:100%;min-width:0}
+.cell-section{max-width:100%;min-width:0;overflow:hidden}
+.cell-sec-title{
+  font-size:11px;font-weight:700;color:var(--ink);
+  padding:4px 0 2px;border-bottom:1px dashed var(--line);margin-bottom:2px;
+}
+.cell-table-wrap{
+  max-width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;
+  border:1px solid rgba(43,38,34,.12);border-radius:4px;
+  -webkit-overflow-scrolling:touch;
+}
+.cell-table{
+  width:100%;border-collapse:collapse;font-size:11.5px;line-height:1.45;
+  border:none;border-radius:0;
+}
+.cell-table th,.cell-table td{
+  border:none;
+  border-top:1px solid rgba(43,38,34,.08);
+  border-left:1px solid rgba(43,38,34,.08);
+  padding:5px 7px;vertical-align:top;
+  min-width:0;color:#4A443D;
+  position:static;
+}
+.cell-table thead tr:first-child th{border-top:none}
+.cell-table th:first-child,.cell-table td:first-child{border-left:none}
+.cell-table th{background:#FAF8F4;font-weight:600;font-size:11px;color:var(--ink)}
+.cell-table tr:nth-child(even) td{background:#FDFCF9}
+.cell-list{margin:0;padding-left:16px;font-size:11.5px;line-height:1.5}
+.cell-list li{margin:2px 0}
+.cell-rows{display:flex;flex-direction:column;gap:3px}
+.cell-row-item{font-size:11.5px;line-height:1.45;padding:2px 0}
+.empty-hint{padding:48px 20px;text-align:center;color:var(--muted);font-size:14px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:11px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;border:1px solid var(--line);background:var(--chip-bg)}
+@media(max-width:700px){
+  .header{padding:16px}
+  .main{padding:12px 12px 40px}
+  .compare-table th,.compare-table td{min-width:160px;max-width:240px;padding:8px 10px;font-size:12px}
+}
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-top">
+    <div>
+      <h1>智力与人格 · 对比表格</h1>
+      <p>横向为理论/量表，纵向为提出人、定义、具体内容（分表展示）。完整收录 PDF 及考研笔记考点，提出人缺失项已网络补全。</p>
+    </div>
+    <a class="back-link" href="../index.html">← 返回工具集</a>
+  </div>
+  <div class="sheet-tabs" id="sheetTabs">
+    <button type="button" class="sheet-tab active" data-sheet="intelligence">智力</button>
+    <button type="button" class="sheet-tab" data-sheet="personality">人格</button>
+  </div>
+  <div class="toolbar">
+    <div class="search-wrap">
+      <input type="search" id="searchInput" placeholder="搜索理论、提出人、关键词…" autocomplete="off">
+    </div>
+    <span class="hint" id="colCount"></span>
+  </div>
+</div>
+
+<main class="main" id="main"></main>
+
+<script src="data.js"></script>
+<script>
+(function () {
+  const ROWS = [
+    { key: "proposer", label: "提出人" },
+    { key: "definition", label: "定义 / 观点" },
+    { key: "content", label: "具体内容" },
+  ];
+
+  let activeSheet = "intelligence";
+  let searchQuery = "";
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function highlight(text, q) {
+    if (!q || text == null || text === "") return escapeHtml(text || "");
+    const safe = escapeHtml(String(text));
+    const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "gi");
+    return safe.replace(re, (m) => `<mark>${m}</mark>`);
+  }
+
+  function contentToText(content) {
+    if (typeof content === "string") return content;
+    if (!Array.isArray(content)) return "";
+    const parts = [];
+    content.forEach((sec) => {
+      if (sec.title) parts.push(sec.title);
+      if (sec.headers) parts.push(...sec.headers);
+      if (sec.rows) {
+        sec.rows.forEach((row) => {
+          if (Array.isArray(row)) parts.push(...row.map(String));
+          else parts.push(String(row));
+        });
+      }
+      if (sec.items) parts.push(...sec.items.map(String));
+    });
+    return parts.join(" ");
+  }
+
+  function renderContent(content, q) {
+    if (!content) return "—";
+    if (typeof content === "string") return highlight(content, q);
+    if (!Array.isArray(content) || !content.length) return "—";
+
+    const html = content.map((sec) => {
+      let inner = "";
+      if (sec.title) {
+        inner += `<div class="cell-sec-title">${highlight(sec.title, q)}</div>`;
+      }
+
+      if (sec.rows && sec.rows.length) {
+        const headers = sec.headers || null;
+        if (headers) {
+          inner += "<div class=\"cell-table-wrap\"><table class=\"cell-table\"><thead><tr>";
+          headers.forEach((h) => { inner += `<th>${highlight(h, q)}</th>`; });
+          inner += "</tr></thead><tbody>";
+          sec.rows.forEach((row) => {
+            const cells = Array.isArray(row) ? row : [row];
+            inner += "<tr>";
+            cells.forEach((c) => { inner += `<td>${highlight(String(c), q)}</td>`; });
+            inner += "</tr>";
+          });
+          inner += "</tbody></table></div>";
+        } else {
+          inner += "<div class=\"cell-rows\">";
+          sec.rows.forEach((row) => {
+            const text = Array.isArray(row) ? row.join(" · ") : String(row);
+            inner += `<div class="cell-row-item">${highlight(text, q)}</div>`;
+          });
+          inner += "</div>";
+        }
+      }
+
+      if (sec.items && sec.items.length) {
+        inner += `<ul class="cell-list">${sec.items.map((it) => `<li>${highlight(String(it), q)}</li>`).join("")}</ul>`;
+      }
+
+      return `<div class="cell-section">${inner}</div>`;
+    }).join("");
+
+    return `<div class="cell-sections">${html}</div>`;
+  }
+
+  function renderCell(col, key, q) {
+    const val = col[key];
+    if (key === "content") {
+      return `<td class="cell-content">${renderContent(val, q)}</td>`;
+    }
+    return `<td>${highlight(val || "—", q)}</td>`;
+  }
+
+  function columnMatches(col, q) {
+    if (!q) return true;
+    const blob = [
+      col.name, col.proposer, col.definition, contentToText(col.content),
+    ].join(" ").toLowerCase();
+    return blob.includes(q.toLowerCase());
+  }
+
+  function updateColCount() {
+    const sheet = window.COMPARISON_DATA[activeSheet];
+    const q = searchQuery.trim();
+    const visible = sheet.columns.filter((c) => columnMatches(c, q)).length;
+    document.getElementById("colCount").textContent = q
+      ? `当前 sheet 显示 ${visible} 列`
+      : `智力 ${window.COMPARISON_DATA.intelligence.columns.length} 列 · 人格 ${window.COMPARISON_DATA.personality.columns.length} 列`;
+  }
+
+  function renderTable(sheetKey) {
+    const sheet = window.COMPARISON_DATA[sheetKey];
+    const q = searchQuery.trim();
+    const visibleCols = sheet.columns.filter((c) => columnMatches(c, q));
+
+    let thead = `<tr><th class="corner">${escapeHtml(sheet.title)}</th>`;
+    if (visibleCols.length === 0) {
+      thead += "<th>—</th></tr>";
+    } else {
+      visibleCols.forEach((col) => {
+        thead += `<th>${highlight(col.name, q)}</th>`;
+      });
+    }
+    thead += "</tr>";
+
+    let tbody = "";
+    ROWS.forEach((row) => {
+      tbody += `<tr><th class="row-label">${row.label}</th>`;
+      if (visibleCols.length === 0) {
+        tbody += `<td class="empty-hint">无匹配项</td>`;
+      } else {
+        visibleCols.forEach((col) => {
+          tbody += renderCell(col, row.key, q);
+        });
+      }
+      tbody += "</tr>";
+    });
+
+    return `
+      <section class="sheet-panel ${sheetKey === activeSheet ? "active" : ""}" data-sheet="${sheetKey}">
+        <div class="sheet-head">
+          <h2>${escapeHtml(sheet.title)}</h2>
+          <p>${escapeHtml(sheet.subtitle)}</p>
+        </div>
+        <div class="table-scroll">
+          <table class="compare-table">
+            <thead>${thead}</thead>
+            <tbody>${tbody}</tbody>
+          </table>
+        </div>
+        <div class="legend">
+          <span><i></i>表头固定，可横向/纵向滚动</span>
+          <span>具体内容列内含分表</span>
+          <span>共 ${visibleCols.length} / ${sheet.columns.length} 列</span>
+        </div>
+      </section>`;
+  }
+
+  function render() {
+    document.getElementById("main").innerHTML =
+      renderTable("intelligence") + renderTable("personality");
+    updateColCount();
+  }
+
+  document.getElementById("sheetTabs").addEventListener("click", (e) => {
+    const btn = e.target.closest(".sheet-tab");
+    if (!btn) return;
+    activeSheet = btn.dataset.sheet;
+    document.querySelectorAll(".sheet-tab").forEach((t) => {
+      t.classList.toggle("active", t.dataset.sheet === activeSheet);
+    });
+    document.querySelectorAll(".sheet-panel").forEach((p) => {
+      p.classList.toggle("active", p.dataset.sheet === activeSheet);
+    });
+    updateColCount();
+  });
+
+  document.getElementById("searchInput").addEventListener("input", (e) => {
+    searchQuery = e.target.value;
+    render();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
